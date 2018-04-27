@@ -2,22 +2,22 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
+namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
 
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\Entities\Subscription;
 use WMDE\Fundraising\Frontend\Infrastructure\TemplateBasedMailer;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
-use WMDE\Fundraising\Frontend\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
-use WMDE\Fundraising\Frontend\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Validation\SubscriptionValidator;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
+use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
+use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\Fundraising\Frontend\Tests\Fixtures\FailedValidationResult;
 use WMDE\FunValidators\ValidationResult;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @covers \WMDE\Fundraising\Frontend\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase
+ * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase
  *
  * @license GNU GPL v2+
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >

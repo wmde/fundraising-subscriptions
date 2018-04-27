@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\UseCases\AddSubscription;
+namespace WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription;
 
 /**
  * @license GNU GPL v2+

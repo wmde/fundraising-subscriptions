@@ -2,10 +2,10 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Validation;
+namespace WMDE\Fundraising\SubscriptionContext\Validation;
 
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\Fundraising\Frontend\Validation\FieldTextPolicyValidator;
 use WMDE\FunValidators\CanValidateField;
 use WMDE\FunValidators\ConstraintViolation;
