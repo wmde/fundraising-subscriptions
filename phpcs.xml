@@ -8,6 +8,10 @@
     <file>src/</file>
     <file>tests/</file>
 
+    <arg name="extensions" value="php"/>
+    <arg value="s"/>
+    <arg value="p"/>
+
     <rule ref="vendor/mediawiki/mediawiki-codesniffer/MediaWiki/Sniffs/WhiteSpace">
         <exclude name="vendor/mediawiki/mediawiki-codesniffer/MediaWiki/Sniffs/WhiteSpace/SpaceBeforeSingleLineCommentSniff.php" />
     </rule>
@@ -130,6 +134,7 @@
             <property name="requiredSpacesBeforeClose" value="1" />
         </properties>
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.OpeningIndent" />
         <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket" />
         <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
     </rule>

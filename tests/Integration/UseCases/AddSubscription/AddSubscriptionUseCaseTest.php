@@ -6,12 +6,12 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSub
 
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\Infrastructure\TemplateBasedMailer;
+use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
-use WMDE\Fundraising\Frontend\Tests\Fixtures\FailedValidationResult;
+use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\FailedValidationResult;
 use WMDE\FunValidators\ValidationResult;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -37,7 +37,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	private $validator;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|TemplateBasedMailer
+	 * @var PHPUnit_Framework_MockObject_MockObject|TemplateMailerInterface
 	 */
 	private $mailer;
 
@@ -48,7 +48,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mailer = $this->getMockBuilder( TemplateBasedMailer::class )
+		$this->mailer = $this->getMockBuilder( TemplateMailerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -88,7 +88,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 		$this->validator->method( 'needsModeration' )->willReturn( true );
 		$this->repo->expects( $this->once() )
 			->method( 'storeSubscription' )
-			->with( $this->callback( function( Subscription $subscription ) {
+			->with( $this->callback( function ( Subscription $subscription ) {
 					return $subscription->needsModeration();
 			} ) );
 
@@ -110,7 +110,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 			->method( 'sendMail' )
 			->with(
 				$this->equalTo( new EmailAddress( self::A_SPECIFIC_EMAIL_ADDRESS ) ),
-				$this->callback( function( $value ) {
+				$this->callback( function ( $value ) {
 					$this->assertInternalType( 'array', $value );
 					$this->assertArrayHasKey( 'subscription', $value );
 					$this->assertInstanceOf( Subscription::class, $value['subscription'] );

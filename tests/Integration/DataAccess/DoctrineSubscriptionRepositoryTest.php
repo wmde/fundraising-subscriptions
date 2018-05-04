@@ -7,11 +7,12 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\DataAccess;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\Entities\Address;
 use WMDE\Fundraising\Entities\Subscription;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
-use WMDE\Fundraising\Frontend\Tests\TestEnvironment;
+use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
 
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository
@@ -19,7 +20,7 @@ use WMDE\Fundraising\Frontend\Tests\TestEnvironment;
  * @license GNU GPL v2+
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
-class DoctrineSubscriptionRepositoryTest extends \PHPUnit\Framework\TestCase {
+class DoctrineSubscriptionRepositoryTest extends TestCase {
 
 	/**
 	 * @var EntityManager
@@ -27,7 +28,7 @@ class DoctrineSubscriptionRepositoryTest extends \PHPUnit\Framework\TestCase {
 	private $entityManager;
 
 	public function setUp(): void {
-		$this->entityManager = TestEnvironment::newInstance()->getFactory()->getEntityManager();
+		$this->entityManager = TestEnvironment::newInstance()->getContainer()->get( EntityManager::class );
 		parent::setUp();
 	}
 
@@ -42,7 +43,7 @@ class DoctrineSubscriptionRepositoryTest extends \PHPUnit\Framework\TestCase {
 		$repository = new DoctrineSubscriptionRepository( $this->entityManager );
 		$repository->storeSubscription( $subscription );
 		$expected = $this->getOrmRepository()->findAll();
-		$this->assertEquals( [$subscription], $expected );
+		$this->assertEquals( [ $subscription ], $expected );
 	}
 
 	public function testGivenARecentSubscription_itIsCounted(): void {

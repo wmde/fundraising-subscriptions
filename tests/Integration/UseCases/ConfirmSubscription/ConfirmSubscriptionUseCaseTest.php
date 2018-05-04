@@ -7,7 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\Confir
 use PHPUnit_Framework_MockObject_MockObject;
 use WMDE\Fundraising\Entities\Address;
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\Infrastructure\TemplateBasedMailer;
+use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\InMemorySubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSubscriptionUseCase;
 
@@ -43,10 +43,10 @@ class ConfirmSubscriptionUseCaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @return PHPUnit_Framework_MockObject_MockObject|TemplateBasedMailer
+	 * @return PHPUnit_Framework_MockObject_MockObject|TemplateMailerInterface
 	 */
 	private function newMailer() {
-		return $this->getMockBuilder( TemplateBasedMailer::class )
+		return $this->getMockBuilder( TemplateMailerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

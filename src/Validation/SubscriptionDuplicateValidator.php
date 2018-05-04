@@ -35,7 +35,7 @@ class SubscriptionDuplicateValidator {
 		$constraintViolations = [];
 
 		if ( $this->repository->countSimilar( $subscription, $this->cutoffDateTime ) > 0 ) {
-			$constraintViolations[] = new ConstraintViolation(
+$constraintViolations[] = new ConstraintViolation(
 				$subscription->getEmail(),
 				'The data was already inserted',
 				self::SOURCE_NAME

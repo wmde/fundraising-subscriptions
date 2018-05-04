@@ -116,8 +116,8 @@ class SubscriptionRequest {
 	 * @param array $values
 	 */
 	public function setWikiloginFromValues( array $values ): void {
-		$trueValues = ['yes', '1'];
-		$falseValues = ['no', '0'];
+		$trueValues = [ 'yes', '1' ];
+		$falseValues = [ 'no', '0' ];
 		$matchingValues = array_intersect( $values, array_merge( $trueValues, $falseValues ) );
 		$wikilogin = in_array( array_shift( $matchingValues ), $trueValues );
 		$this->setWikilogin( $wikilogin );

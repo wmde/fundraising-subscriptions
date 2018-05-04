@@ -7,6 +7,7 @@
 
 		"doctrine/orm": "~2.5",
 		"psr/log": "~1.0",
+		"symfony/dependency-injection": "~4.0",
 
 		"wmde/fundraising-store": "~7.0",
 		"wmde/email-address": "~1.0",

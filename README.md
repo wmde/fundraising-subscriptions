@@ -1,10 +1,10 @@
 # Fundraising Subscriptions context
 
-This is the bounded context for subscriptions.
+Bounded Context for the Wikimedia Deutschland fundraising subscriptions (people subscribing to newsletters and reminders).
 
 ## Installation
 
-To use the `wmde/fundraising-subscriptions` library in your project, simply add a dependency on `wmde/fundraising-subscriptions`
+To use the `wmde/fundraising-subscriptions` library in your project, add a dependency on `wmde/fundraising-subscriptions`
 to your project's `composer.json` file. Here is a minimal example of a `composer.json`
 file that just defines a dependency on `wmde/fundraising-subscriptions` 1.x:
 
