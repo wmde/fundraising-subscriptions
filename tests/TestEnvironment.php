@@ -4,13 +4,10 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManager;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
-use WMDE\Fundraising\Store\Factory as StoreFactory;
+use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use WMDE\Fundraising\Store\Installer;
 
 /**
@@ -23,18 +20,8 @@ class TestEnvironment {
 	private $container;
 
 	public static function newInstance(): self {
-		$environment = new self(
-			[
-				'db' => [
-					'driver' => 'pdo_sqlite',
-					'memory' => true,
-				],
-				'var_path' => '/tmp'
-			]
-		);
-
+		$environment = new self( [] );
 		$environment->install();
-
 		return $environment;
 	}
 
@@ -45,25 +32,16 @@ class TestEnvironment {
 		foreach ( $config as $key => $value ) {
 			$container->setParameter( $key, $value );
 		}
-		$container->register( Connection::class )
-			->setFactory( [ DriverManager::class, 'getConnection' ] )
-			->addArgument( new Parameter( 'db' ) );
-		$container->register( StoreFactory::class, StoreFactory::class )
-			->addArgument( new Reference( Connection::class ) )
-			->addArgument( new Parameter( 'var_path' ) );
-		$container->register( EntityManager::class )
-			->setFactory( [ new Reference( StoreFactory::class ), 'getEntityManager' ] )
-			->setPublic( true );
-		$container->register( Installer::class )
-			->setFactory( [ new Reference( StoreFactory::class ), 'newInstaller' ] )
-			->setPublic( true );
+		$loader = new YamlFileLoader( $container, new FileLocator( __DIR__ ) );
+		$loader->load( 'services.yml' );
+
 		$container->compile();
 		$this->container = $container;
 	}
 
 	private function install(): void {
 		/** @var Installer $installer */
-		$installer = $this->container->get( Installer::class );
+		$installer = $this->container->get( 'db.installer' );
 
 		try {
 			$installer->uninstall();
