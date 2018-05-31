@@ -29,6 +29,17 @@ class SubscriptionRepositorySpy implements SubscriptionRepository {
 		return $this->subscriptions;
 	}
 
+	public function subscriptionsWereStored(): bool {
+		return count( $this->subscriptions ) > 0;
+	}
+
+	public function getFirstSubscription(): Subscription {
+		if ( !$this->subscriptionsWereStored() ) {
+			throw new \RuntimeException( 'No Subscriptions were stored' );
+		}
+		return $this->subscriptions[0];
+	}
+
 	public function countSimilar( Subscription $subscription, \DateTime $cutoffDateTime ): int {
 		return 0;
 	}

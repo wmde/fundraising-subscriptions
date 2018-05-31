@@ -21,6 +21,9 @@ use WMDE\FunValidators\Validators\TextPolicyValidator;
 class SubscriptionValidator {
 	use CanValidateField;
 
+	public const SOURCE_EMAIL = 'email';
+	public const SOURCE_TITLE = 'title';
+
 	private $mailValidator;
 	private $duplicateValidator;
 	private $textPolicyValidator;
@@ -45,30 +48,31 @@ class SubscriptionValidator {
 	public function validate( Subscription $subscription ): ValidationResult {
 		return new ValidationResult( ...array_filter( array_merge(
 			$this->getRequiredFieldViolations( $subscription ),
-			[ $this->getFieldViolation( $this->mailValidator->validate( $subscription->getEmail() ), 'email' ) ],
+			[ $this->getFieldViolation( $this->mailValidator->validate( $subscription->getEmail() ), self::SOURCE_EMAIL ) ],
 			[ $this->getFieldViolation(
 				$this->titleValidator->validate( $subscription->getAddress()->getTitle() ),
-				'title'
+				self::SOURCE_TITLE
 			) ],
 			$this->duplicateValidator->validate( $subscription )->getViolations() )
 		) );
 	}
 
 	public function needsModeration( Subscription $subscription ): bool {
-		return array_reduce(
+		$allWordsAreHarmless = array_reduce(
 			$this->getBadWordViolations( $subscription ),
-			function ( $oneElementNeedsModeration, $currentElementNeedsModeration ) {
-				return $oneElementNeedsModeration || $currentElementNeedsModeration;
+			function ( $previousWordsWereHarmless, $currentWordIsHarmless ) {
+				return $previousWordsWereHarmless && $currentWordIsHarmless;
 			},
-			false
+			true
 		);
+		return !$allWordsAreHarmless;
 	}
 
 	private function getRequiredFieldViolations( Subscription $subscription ): array {
 		$validator = new RequiredFieldValidator();
 
 		return [
-			$this->getFieldViolation( $validator->validate( $subscription->getEmail() ), 'email' )
+			$this->getFieldViolation( $validator->validate( $subscription->getEmail() ), self::SOURCE_EMAIL )
 		];
 	}
 
