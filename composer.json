@@ -7,7 +7,6 @@
 
 		"doctrine/orm": "~2.5",
 		"psr/log": "~1.0",
-		"symfony/dependency-injection": "~4.0",
 
 		"wmde/fundraising-store": "~7.0",
 		"wmde/email-address": "~1.0",
@@ -19,9 +18,7 @@
 		"squizlabs/php_codesniffer": "~3.2",
 		"slevomat/coding-standard": "~4.5",
 		"mediawiki/mediawiki-codesniffer": "~18.0",
-		"phpstan/phpstan": "~0.9.2",
-		"symfony/config": "^4.0",
-		"symfony/yaml": "^4.0"
+		"phpstan/phpstan": "~0.9.2"
 	},
 	"autoload": {
 		"psr-4": {
