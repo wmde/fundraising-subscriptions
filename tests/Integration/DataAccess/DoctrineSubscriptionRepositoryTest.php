@@ -28,7 +28,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	private $entityManager;
 
 	public function setUp(): void {
-		$this->entityManager = TestEnvironment::newInstance()->getContainer()->get( EntityManager::class );
+		$this->entityManager = TestEnvironment::newInstance()->getContainer()->get( 'entity_manager' );
 		parent::setUp();
 	}
 
