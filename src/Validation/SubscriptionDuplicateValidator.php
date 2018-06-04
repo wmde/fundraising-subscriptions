@@ -2,11 +2,11 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Validation;
+namespace WMDE\Fundraising\SubscriptionContext\Validation;
 
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
 
@@ -35,7 +35,7 @@ class SubscriptionDuplicateValidator {
 		$constraintViolations = [];
 
 		if ( $this->repository->countSimilar( $subscription, $this->cutoffDateTime ) > 0 ) {
-			$constraintViolations[] = new ConstraintViolation(
+$constraintViolations[] = new ConstraintViolation(
 				$subscription->getEmail(),
 				'The data was already inserted',
 				self::SOURCE_NAME

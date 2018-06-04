@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories;
+namespace WMDE\Fundraising\SubscriptionContext\Domain\Repositories;
 
 use WMDE\Fundraising\Entities\Subscription;
 

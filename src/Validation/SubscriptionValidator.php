@@ -2,11 +2,10 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Validation;
+namespace WMDE\Fundraising\SubscriptionContext\Validation;
 
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
-use WMDE\Fundraising\Frontend\Validation\FieldTextPolicyValidator;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\FunValidators\CanValidateField;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
@@ -56,11 +55,13 @@ class SubscriptionValidator {
 	}
 
 	public function needsModeration( Subscription $subscription ): bool {
-		$this->textPolicyViolations = array_filter(
-			$this->getBadWordViolations( $subscription )
+		return array_reduce(
+			$this->getBadWordViolations( $subscription ),
+			function ( $oneElementNeedsModeration, $currentElementNeedsModeration ) {
+				return $oneElementNeedsModeration || $currentElementNeedsModeration;
+			},
+			false
 		);
-
-		return !empty( $this->textPolicyViolations );
 	}
 
 	private function getRequiredFieldViolations( Subscription $subscription ): array {
@@ -72,16 +73,14 @@ class SubscriptionValidator {
 	}
 
 	private function getBadWordViolations( Subscription $subscription ): array {
-		$fieldTextValidator = new FieldTextPolicyValidator( $this->textPolicyValidator );
 		$address = $subscription->getAddress();
-
 		return [
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getFirstName() ), 'firstName' ),
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getLastName() ), 'lastName' ),
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getCompany() ), 'company' ),
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getAddress() ), 'address' ),
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getPostcode() ), 'postcode' ),
-			$this->getFieldViolation( $fieldTextValidator->validate( $address->getCity() ), 'city' )
+			$this->textPolicyValidator->textIsHarmless( $address->getFirstName() ),
+			$this->textPolicyValidator->textIsHarmless( $address->getLastName() ),
+			$this->textPolicyValidator->textIsHarmless( $address->getCompany() ),
+			$this->textPolicyValidator->textIsHarmless( $address->getAddress() ),
+			$this->textPolicyValidator->textIsHarmless( $address->getPostcode() ),
+			$this->textPolicyValidator->textIsHarmless( $address->getCity() )
 		];
 	}
 

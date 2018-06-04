@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\UseCases\AddSubscription;
+namespace WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription;
 
 /**
  * @license GNU GPL v2+
@@ -116,8 +116,8 @@ class SubscriptionRequest {
 	 * @param array $values
 	 */
 	public function setWikiloginFromValues( array $values ): void {
-		$trueValues = ['yes', '1'];
-		$falseValues = ['no', '0'];
+		$trueValues = [ 'yes', '1' ];
+		$falseValues = [ 'no', '0' ];
 		$matchingValues = array_intersect( $values, array_merge( $trueValues, $falseValues ) );
 		$wikilogin = in_array( array_shift( $matchingValues ), $trueValues );
 		$this->setWikilogin( $wikilogin );

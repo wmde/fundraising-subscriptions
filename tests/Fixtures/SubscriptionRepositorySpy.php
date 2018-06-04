@@ -2,10 +2,10 @@
 
 declare( strict_types = 1 );
 
-namespace WMDE\Fundraising\Frontend\SubscriptionContext\Tests\Fixtures;
+namespace WMDE\Fundraising\SubscriptionContext\Tests\Fixtures;
 
 use WMDE\Fundraising\Entities\Subscription;
-use WMDE\Fundraising\Frontend\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 
 /**
  * @licence GNU GPL v2+
