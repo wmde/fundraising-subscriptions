@@ -8,6 +8,7 @@ use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\Entities\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\SubscriptionRepositorySpy;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
@@ -27,7 +28,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	private const A_SPECIFIC_EMAIL_ADDRESS = 'curious@nyancat.com';
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|SubscriptionRepository
+	 * @var SubscriptionRepositorySpy
 	 */
 	private $repo;
 
@@ -42,7 +43,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	private $mailer;
 
 	public function setUp(): void {
-		$this->repo = $this->createMock( SubscriptionRepository::class );
+		$this->repo = new SubscriptionRepositorySpy();
 
 		$this->validator = $this->getMockBuilder( SubscriptionValidator::class )
 			->disableOriginalConstructor()
@@ -63,6 +64,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
 		$result = $useCase->addSubscription( $this->createValidSubscriptionRequest() );
+
 		$this->assertTrue( $result->isSuccessful() );
 	}
 
@@ -70,38 +72,48 @@ class AddSubscriptionUseCaseTest extends TestCase {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
 		$request = $this->createMock( SubscriptionRequest::class );
+
 		$result = $useCase->addSubscription( $request );
+
 		$this->assertFalse( $result->isSuccessful() );
 	}
 
 	public function testGivenValidData_requestWillBeStored(): void {
 		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
-		$this->repo->expects( $this->once() )
-			->method( 'storeSubscription' )
-			->with( $this->isInstanceOf( Subscription::class ) );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
+
 		$useCase->addSubscription( $this->createValidSubscriptionRequest() );
+
+		$this->assertTrue( $this->repo->subscriptionsWereStored() );
+	}
+
+	public function testGivenValidData_subscriptionContainsEmptyCompanyName(): void {
+		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
+		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
+
+		$useCase->addSubscription( $this->createValidSubscriptionRequest() );
+
+		$this->assertSame( '', $this->repo->getFirstSubscription()->getAddress()->getCompany() );
 	}
 
 	public function testGivenDataThatNeedsToBeModerated_requestWillBeStored(): void {
 		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
 		$this->validator->method( 'needsModeration' )->willReturn( true );
-		$this->repo->expects( $this->once() )
-			->method( 'storeSubscription' )
-			->with( $this->callback( function ( Subscription $subscription ) {
-					return $subscription->needsModeration();
-			} ) );
 
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
 		$useCase->addSubscription( $this->createValidSubscriptionRequest() );
+
+		$this->assertTrue( $this->repo->getFirstSubscription()->needsModeration() );
 	}
 
 	public function testGivenInvalidData_requestWillNotBeStored(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
-		$this->repo->expects( $this->never() )->method( 'storeSubscription' );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
 		$request = $this->createMock( SubscriptionRequest::class );
+
 		$useCase->addSubscription( $request );
+
+		$this->assertFalse( $this->repo->subscriptionsWereStored() );
 	}
 
 	public function testGivenValidData_requestWillBeMailed(): void {

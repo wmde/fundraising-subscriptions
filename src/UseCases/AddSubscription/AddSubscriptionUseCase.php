@@ -100,6 +100,7 @@ class AddSubscriptionUseCase {
 		$address->setAddress( $subscriptionRequest->getAddress() );
 		$address->setPostcode( $subscriptionRequest->getPostcode() );
 		$address->setCity( $subscriptionRequest->getCity() );
+		$address->setCompany( '' ); // Company must be string for validation, but none is given in request
 
 		return $address;
 	}
