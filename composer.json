@@ -8,7 +8,7 @@
 		"doctrine/orm": "~2.5",
 		"psr/log": "~1.0",
 
-		"wmde/fundraising-store": "~9.0.0",
+		"wmde/fundraising-store": "~10.0.0",
 		"wmde/email-address": "~1.0",
 		"wmde/fun-validators": "~1.0"
 	},
@@ -20,6 +20,13 @@
 		"mediawiki/mediawiki-codesniffer": "~18.0",
 		"phpstan/phpstan": "~0.9.2"
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/wmde/fundraisingstore",
+			"no-api": true
+		}
+	],
 	"autoload": {
 		"psr-4": {
 			"WMDE\\Fundraising\\SubscriptionContext\\": "src/"
