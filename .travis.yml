@@ -1,7 +1,7 @@
 language: php
 
 php:
-  - 7.2
+  - 7.4
 
 sudo: false
 
@@ -12,7 +12,6 @@ install:
   - travis_retry make composer install
 
 script:
-  - composer validate --no-interaction
   - make ci
 
 after_success:
