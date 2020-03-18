@@ -6,9 +6,9 @@ ifeq (composer,$(firstword $(MAKECMDGOALS)))
   $(eval $(RUN_ARGS):;@:)
 endif
 
-.PHONY: ci test phpunit cs stan covers composer
+.PHONY: ci test phpunit cs stan covers composer validate-composerfile
 
-ci: test cs
+ci: test cs validate-composerfile
 
 test: covers phpunit
 
@@ -28,6 +28,10 @@ stan:
 
 covers:
 	docker-compose run --rm app ./vendor/bin/covers-validator
+
+validate-composerfile:
+	docker run --rm --interactive --tty --volume $(shell pwd):/app -w /app\
+	 --volume ~/.composer:/composer --user $(shell id -u):$(shell id -g) wikimediade/fundraising-frontend:composer composer validate --no-interaction
 
 composer:
 	docker run --rm --interactive --tty --volume $(shell pwd):/app -w /app\
