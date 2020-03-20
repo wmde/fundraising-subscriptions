@@ -46,7 +46,7 @@ class ConfirmSubscriptionUseCaseTest extends TestCase {
 	/**
 	 * @return TemplateMailerInterface&MockObject
 	 */
-	private function newMailer() {
+	private function newMailer(): TemplateMailerInterface {
 		return $this->createMock( TemplateMailerInterface::class );
 	}
 
