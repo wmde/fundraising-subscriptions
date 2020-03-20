@@ -24,7 +24,7 @@ phpcs:
 	docker-compose run --rm app ./vendor/bin/phpcs
 
 stan:
-	docker-compose run --rm app ./vendor/bin/phpstan analyse --level=1 --no-progress src/ tests/
+	docker-compose run --rm app ./vendor/bin/phpstan analyse --level=2 --no-progress src/ tests/
 
 covers:
 	docker-compose run --rm app ./vendor/bin/covers-validator

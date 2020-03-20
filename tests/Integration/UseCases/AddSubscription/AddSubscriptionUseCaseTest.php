@@ -4,10 +4,10 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\Entities\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
-use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\SubscriptionRepositorySpy;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
@@ -15,7 +15,6 @@ use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\FailedValidationResult;
 use WMDE\FunValidators\ValidationResult;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase
@@ -33,25 +32,21 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	private $repo;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|SubscriptionValidator
+	 * @var SubscriptionValidator&MockObject
 	 */
 	private $validator;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|TemplateMailerInterface
+	 * @var TemplateMailerInterface&MockObject
 	 */
 	private $mailer;
 
 	public function setUp(): void {
 		$this->repo = new SubscriptionRepositorySpy();
 
-		$this->validator = $this->getMockBuilder( SubscriptionValidator::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->validator = $this->createMock( SubscriptionValidator::class );
 
-		$this->mailer = $this->getMockBuilder( TemplateMailerInterface::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->mailer = $this->createMock( TemplateMailerInterface::class );
 	}
 
 	private function createValidSubscriptionRequest(): SubscriptionRequest {
