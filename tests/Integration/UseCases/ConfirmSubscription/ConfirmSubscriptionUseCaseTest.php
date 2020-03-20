@@ -4,7 +4,8 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\ConfirmSubscription;
 
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\Entities\Address;
 use WMDE\Fundraising\Entities\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
@@ -17,7 +18,7 @@ use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSub
  * @license GNU GPL v2+
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
-class ConfirmSubscriptionUseCaseTest extends \PHPUnit\Framework\TestCase {
+class ConfirmSubscriptionUseCaseTest extends TestCase {
 
 	const CONFIRMATION_CODE = 'deadbeef';
 
@@ -43,12 +44,10 @@ class ConfirmSubscriptionUseCaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @return PHPUnit_Framework_MockObject_MockObject|TemplateMailerInterface
+	 * @return TemplateMailerInterface&MockObject
 	 */
 	private function newMailer() {
-		return $this->getMockBuilder( TemplateMailerInterface::class )
-			->disableOriginalConstructor()
-			->getMock();
+		return $this->createMock( TemplateMailerInterface::class );
 	}
 
 	public function testGivenNoSubscriptions_anErrorResponseIsCreated(): void {
