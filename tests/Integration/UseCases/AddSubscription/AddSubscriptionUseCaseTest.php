@@ -123,7 +123,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 			->with(
 				$this->equalTo( new EmailAddress( self::A_SPECIFIC_EMAIL_ADDRESS ) ),
 				$this->callback( function ( $value ) {
-					$this->assertInternalType( 'array', $value );
+					$this->assertIsArray( $value );
 					$this->assertArrayHasKey( 'subscription', $value );
 					$this->assertInstanceOf( Subscription::class, $value['subscription'] );
 
