@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\UseCases\AddSubscription;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 use WMDE\Fundraising\Entities\Address;
@@ -30,9 +31,11 @@ class SubscriptionValidatorTest extends TestCase {
 		return $mock;
 	}
 
+	/**
+	 * @return SubscriptionDuplicateValidator&MockObject
+	 */
 	private function newPassingDuplicateValidator(): SubscriptionDuplicateValidator {
-		$mock = $this->getMockBuilder( SubscriptionDuplicateValidator::class )
-			->disableOriginalConstructor()->getMock();
+		$mock = $this->createMock( SubscriptionDuplicateValidator::class );
 
 		$mock->method( 'validate' )->willReturn( new ValidationResult() );
 		return $mock;

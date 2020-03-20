@@ -7,6 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\DataAccess;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\Entities\Address;
 use WMDE\Fundraising\Entities\Subscription;
@@ -32,7 +33,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 		parent::setUp();
 	}
 
-	private function getOrmRepository(): EntityRepository {
+	private function getOrmRepository(): ObjectRepository {
 		return $this->entityManager->getRepository( Subscription::class );
 	}
 
