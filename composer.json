@@ -3,7 +3,7 @@
 	"license": "GPL-2.0-or-later",
 	"description": "Bounded Context for fundraising subcriptions",
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.3",
 
 		"doctrine/orm": "~2.5",
 		"psr/log": "~1.0",
