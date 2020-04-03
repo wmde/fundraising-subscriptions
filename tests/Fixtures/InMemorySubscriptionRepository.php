@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Fixtures;
 
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 
 /**

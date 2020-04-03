@@ -5,8 +5,7 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription;
 
 use WMDE\EmailAddress\EmailAddress;
-use WMDE\Fundraising\Entities\Address;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
@@ -47,15 +46,7 @@ class AddSubscriptionUseCase {
 			return ValidationResponse::newFailureResponse( $validationResult->getViolations() );
 		}
 
-		if ( $this->subscriptionValidator->needsModeration( $subscription ) ) {
-			$subscription->markForModeration();
-		}
-
 		$this->subscriptionRepository->storeSubscription( $subscription );
-
-		if ( $this->subscriptionValidator->needsModeration( $subscription ) ) {
-			return ValidationResponse::newModerationNeededResponse();
-		}
 
 		$this->sendSubscriptionNotification( $subscription );
 
@@ -77,7 +68,6 @@ class AddSubscriptionUseCase {
 	private function createSubscriptionFromRequest( SubscriptionRequest $subscriptionRequest ): Subscription {
 		$subscription = new Subscription();
 
-		$subscription->setAddress( $this->addressFromSubscriptionRequest( $subscriptionRequest ) );
 		$subscription->setEmail( $subscriptionRequest->getEmail() );
 		$subscription->setTracking( $subscriptionRequest->getTrackingString() );
 		$subscription->setSource( $subscriptionRequest->getSource() );
@@ -88,22 +78,6 @@ class AddSubscriptionUseCase {
 
 	private function generateConfirmationCode(): string {
 		return bin2hex( random_bytes( self::CONFIRMATION_CODE_LENGTH_BYTES ) );
-	}
-
-	private function addressFromSubscriptionRequest( SubscriptionRequest $subscriptionRequest ): Address {
-		$address = new Address();
-
-		$address->setSalutation( $subscriptionRequest->getSalutation() );
-		$address->setTitle( $subscriptionRequest->getTitle() );
-		$address->setFirstName( $subscriptionRequest->getFirstName() );
-		$address->setLastName( $subscriptionRequest->getLastName() );
-		$address->setAddress( $subscriptionRequest->getAddress() );
-		$address->setPostcode( $subscriptionRequest->getPostcode() );
-		$address->setCity( $subscriptionRequest->getCity() );
-		// Company must be string for validation, but none is given in request
-		$address->setCompany( '' );
-
-		return $address;
 	}
 
 }

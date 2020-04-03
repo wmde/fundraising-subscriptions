@@ -7,7 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\DataAccess;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 
@@ -30,7 +30,6 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 	public function storeSubscription( Subscription $subscription ): void {
 		try {
 			$this->entityManager->persist( $subscription );
-			$this->entityManager->persist( $subscription->getAddress() );
 			$this->entityManager->flush();
 		}
 		catch ( ORMException $e ) {

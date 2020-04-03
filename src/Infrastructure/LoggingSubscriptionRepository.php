@@ -6,7 +6,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Infrastructure;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 

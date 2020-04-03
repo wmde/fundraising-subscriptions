@@ -6,8 +6,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\Confir
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use WMDE\Fundraising\Entities\Address;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\InMemorySubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSubscriptionUseCase;
@@ -22,23 +21,11 @@ class ConfirmSubscriptionUseCaseTest extends TestCase {
 
 	const CONFIRMATION_CODE = 'deadbeef';
 
-	private function newSubscriptionAddress(): Address {
-		$address = new Address();
-
-		$address->setSalutation( 'Herr' );
-		$address->setFirstName( 'Nyan' );
-		$address->setLastName( 'Cat' );
-		$address->setTitle( 'Dr.' );
-
-		return $address;
-	}
-
 	private function newSubscription(): Subscription {
 		$subscription = new Subscription();
 
 		$subscription->setConfirmationCode( self::CONFIRMATION_CODE );
 		$subscription->setEmail( 'nyan@awesomecats.com' );
-		$subscription->setAddress( $this->newSubscriptionAddress() );
 
 		return $subscription;
 	}
