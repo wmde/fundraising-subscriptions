@@ -12,10 +12,6 @@
     <arg value="s"/>
     <arg value="p"/>
 
-    <rule ref="vendor/mediawiki/mediawiki-codesniffer/MediaWiki/Sniffs/WhiteSpace">
-        <exclude name="vendor/mediawiki/mediawiki-codesniffer/MediaWiki/Sniffs/WhiteSpace/SpaceBeforeSingleLineCommentSniff.php" />
-    </rule>
-
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
     <rule ref="Generic.Classes" />
     <rule ref="Generic.CodeAnalysis">
@@ -172,7 +168,4 @@
 
     <rule ref="./vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Namespaces/UseDoesNotStartWithBackslashSniff.php" />
 
-    <rule ref="MediaWiki.WhiteSpace.DisallowEmptyLineFunctions">
-        <exclude name="MediaWiki.WhiteSpace.DisallowEmptyLineFunctions.NoEmptyLine" />
-    </rule>
 </ruleset>
