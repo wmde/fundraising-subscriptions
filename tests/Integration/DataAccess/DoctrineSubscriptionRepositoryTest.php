@@ -9,8 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use WMDE\Fundraising\Entities\Address;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
@@ -40,7 +39,6 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	public function testGivenASubscription_itIsStored(): void {
 		$subscription = new Subscription();
 		$subscription->setEmail( 'nyan@awesomecats.com' );
-		$subscription->setAddress( new Address() );
 		$repository = new DoctrineSubscriptionRepository( $this->entityManager );
 		$repository->storeSubscription( $subscription );
 		$expected = $this->getOrmRepository()->findAll();
@@ -72,7 +70,6 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 		$repository = new DoctrineSubscriptionRepository( $entityManager );
 		$subscription = new Subscription();
 		$subscription->setEmail( 'nyan@awesomecats.com' );
-		$subscription->setAddress( new Address() );
 
 		$this->expectException( SubscriptionRepositoryException::class );
 		$repository->storeSubscription( $subscription );

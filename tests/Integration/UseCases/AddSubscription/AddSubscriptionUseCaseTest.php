@@ -6,7 +6,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSub
 
 use PHPUnit\Framework\MockObject\MockObject;
 use WMDE\EmailAddress\EmailAddress;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\SubscriptionRepositorySpy;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
@@ -82,25 +82,6 @@ class AddSubscriptionUseCaseTest extends TestCase {
 		$this->assertTrue( $this->repo->subscriptionsWereStored() );
 	}
 
-	public function testGivenValidData_subscriptionContainsEmptyCompanyName(): void {
-		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
-		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-
-		$useCase->addSubscription( $this->createValidSubscriptionRequest() );
-
-		$this->assertSame( '', $this->repo->getFirstSubscription()->getAddress()->getCompany() );
-	}
-
-	public function testGivenDataThatNeedsToBeModerated_requestWillBeStored(): void {
-		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
-		$this->validator->method( 'needsModeration' )->willReturn( true );
-
-		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-		$useCase->addSubscription( $this->createValidSubscriptionRequest() );
-
-		$this->assertTrue( $this->repo->getFirstSubscription()->needsModeration() );
-	}
-
 	public function testGivenInvalidData_requestWillNotBeStored(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
@@ -134,15 +115,6 @@ class AddSubscriptionUseCaseTest extends TestCase {
 
 	public function testGivenInvalidData_requestWillNotBeMailed(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
-		$this->mailer->expects( $this->never() )->method( 'sendMail' );
-		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-		$request = $this->createMock( SubscriptionRequest::class );
-		$useCase->addSubscription( $request );
-	}
-
-	public function testGivenDataThatNeedsToBeModerated_requestNotBeMailed(): void {
-		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
-		$this->validator->method( 'needsModeration' )->willReturn( true );
 		$this->mailer->expects( $this->never() )->method( 'sendMail' );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
 		$request = $this->createMock( SubscriptionRequest::class );

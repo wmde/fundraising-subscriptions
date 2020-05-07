@@ -7,15 +7,12 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\UseCases\AddSubscripti
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-use WMDE\Fundraising\Entities\Address;
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidator;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
-use WMDE\FunValidators\Validators\AllowedValuesValidator;
 use WMDE\FunValidators\Validators\EmailValidator;
-use WMDE\FunValidators\Validators\TextPolicyValidator;
 
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator
@@ -23,13 +20,6 @@ use WMDE\FunValidators\Validators\TextPolicyValidator;
  * @license GNU GPL v2+
  */
 class SubscriptionValidatorTest extends TestCase {
-
-	private function newPassingTextPolicyValidator(): TextPolicyValidator {
-		$mock = $this->createMock( TextPolicyValidator::class );
-		$mock->method( 'textIsHarmless' )
-			->willReturn( true );
-		return $mock;
-	}
 
 	/**
 	 * @return SubscriptionDuplicateValidator&MockObject
@@ -47,25 +37,6 @@ class SubscriptionValidatorTest extends TestCase {
 		return $mock;
 	}
 
-	private function newPassingTitleValidator(): AllowedValuesValidator {
-		$mock = $this->createMock( AllowedValuesValidator::class );
-		$mock->method( 'validate' )->willReturn( new ValidationResult() );
-		return $mock;
-	}
-
-	private function createValidAddress( string $saluation, string $firstName, string $lastName ): Address {
-		$address = new Address();
-		$address->setSalutation( $saluation );
-		$address->setFirstName( $firstName );
-		$address->setLastName( $lastName );
-		$address->setTitle( '' );
-		$address->setCompany( '' );
-		$address->setAddress( '' );
-		$address->setCity( '' );
-		$address->setPostcode( '' );
-		return $address;
-	}
-
 	public function testGivenFailingEmailValidation_subscriptionValidationFails(): void {
 		$mailValidator = $this->createMock( EmailValidator::class );
 		$mailValidator->method( 'validate' )->willReturn( new ValidationResult(
@@ -73,12 +44,9 @@ class SubscriptionValidatorTest extends TestCase {
 		);
 		$subscriptionValidator = new SubscriptionValidator(
 			$mailValidator,
-			$this->newPassingTextPolicyValidator(),
 			$this->newPassingDuplicateValidator(),
-			$this->newPassingTitleValidator()
 		);
 		$subscription = new Subscription();
-		$subscription->setAddress( $this->createValidAddress( 'Herr', 'Nyan', 'Cat' ) );
 		$subscription->setEmail( 'this is not a mail addess' );
 		$this->assertConstraintWasViolated(
 			$subscriptionValidator->validate( $subscription ),
@@ -103,44 +71,6 @@ class SubscriptionValidatorTest extends TestCase {
 		);
 	}
 
-	public function testGivenBadWords_subscriptionIsStillValid(): void {
-		$policyValidator = $this->createMock( TextPolicyValidator::class );
-		$policyValidator->method( 'hasHarmlessContent' )
-			->willReturn( false );
-		$subscriptionValidator = new SubscriptionValidator(
-			$this->newPassingEmailValidator(),
-			$policyValidator,
-			$this->newPassingDuplicateValidator(),
-			$this->newPassingTitleValidator()
-		);
-		$this->assertTrue( $subscriptionValidator->validate( $this->newSubscription() )->isSuccessful() );
-	}
-
-	public function testGivenHarmlessContent_needsModerationIsFalse(): void {
-		$subscriptionValidator = new SubscriptionValidator(
-			$this->newPassingEmailValidator(),
-			$this->newPassingTextPolicyValidator(),
-			$this->newPassingDuplicateValidator(),
-			$this->newPassingTitleValidator()
-		);
-
-		$this->assertFalse( $subscriptionValidator->needsModeration( $this->newSubscription() ) );
-	}
-
-	public function testGivenBadWords_needsModerationIsTrue(): void {
-		$policyValidator = $this->createMock( TextPolicyValidator::class );
-		$policyValidator->method( 'textIsHarmless' )
-			->willReturn( false );
-		$subscriptionValidator = new SubscriptionValidator(
-			$this->newPassingEmailValidator(),
-			$policyValidator,
-			$this->newPassingDuplicateValidator(),
-			$this->newPassingTitleValidator()
-		);
-
-		$this->assertTrue( $subscriptionValidator->needsModeration( $this->newSubscription() ) );
-	}
-
 	public function testGivenDuplicateSubscription_newSubscriptionIsInvalid(): void {
 		$failingDuplicateValidator = $this->createMock( SubscriptionDuplicateValidator::class );
 
@@ -149,9 +79,7 @@ class SubscriptionValidatorTest extends TestCase {
 		) );
 		$subscriptionValidator = new SubscriptionValidator(
 			$this->newPassingEmailValidator(),
-			$this->newPassingTextPolicyValidator(),
-			$failingDuplicateValidator,
-			$this->newPassingTitleValidator()
+			$failingDuplicateValidator
 		);
 		$this->assertConstraintWasViolated(
 			$subscriptionValidator->validate( $this->newSubscription() ),
@@ -162,13 +90,10 @@ class SubscriptionValidatorTest extends TestCase {
 	public function testOnlyEmailIsARequiredField() {
 		$subscriptionValidator = new SubscriptionValidator(
 			$this->newPassingEmailValidator(),
-			$this->newPassingTextPolicyValidator(),
-			$this->newPassingDuplicateValidator(),
-			$this->newPassingTitleValidator()
+			$this->newPassingDuplicateValidator()
 		);
 
 		$subscription = new Subscription();
-		$subscription->setAddress( $this->createValidAddress( '', '', '' ) );
 		$subscription->setEmail( 'nyan@meow.com' );
 
 		$this->assertTrue(
@@ -183,27 +108,8 @@ class SubscriptionValidatorTest extends TestCase {
 		);
 	}
 
-	public function testGivenAFailingTitleValidator_subscriptionValidationFails(): void {
-		$failingTitleValidator = $this->createMock( AllowedValuesValidator::class );
-		$failingTitleValidator->method( 'validate' )->willReturn( new ValidationResult(
-			new ConstraintViolation( '', 'not_allowed' )
-		) );
-
-		$subscriptionValidator = new SubscriptionValidator(
-			$this->newPassingEmailValidator(),
-			$this->newPassingTextPolicyValidator(),
-			$this->newPassingDuplicateValidator(),
-			$failingTitleValidator
-		);
-		$this->assertConstraintWasViolated(
-			$subscriptionValidator->validate( $this->newSubscription() ),
-			SubscriptionValidator::SOURCE_TITLE
-		);
-	}
-
 	private function newSubscription(): Subscription {
 		$subscription = new Subscription();
-		$subscription->setAddress( $this->createValidAddress( 'Herr', 'Nyan', 'Cat' ) );
 		$subscription->setEmail( 'nyan@meow.com' );
 		return $subscription;
 	}

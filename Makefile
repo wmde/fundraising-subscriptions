@@ -1,5 +1,5 @@
 # If the first argument is "composer"...
-ifeq (composer,$(firstword $(MAKECMDGOALS)))
+ifeq (composer, $(firstword $(MAKECMDGOALS)))
   # use the rest as arguments for "composer"
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   # ...and turn them into do-nothing targets

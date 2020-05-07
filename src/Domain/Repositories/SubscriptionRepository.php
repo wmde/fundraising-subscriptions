@@ -4,11 +4,9 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Domain\Repositories;
 
-use WMDE\Fundraising\Entities\Subscription;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 
 /**
- * FIXME: this repository exposes data access layer details (should use a domain object instead)
- *
  * @license GNU GPL v2+
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
