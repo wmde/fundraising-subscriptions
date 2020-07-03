@@ -11,16 +11,16 @@ use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionReposit
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class LoggingSubscriptionRepository implements SubscriptionRepository {
 
-	const CONTEXT_EXCEPTION_KEY = 'exception';
+	private const CONTEXT_EXCEPTION_KEY = 'exception';
 
-	private $repository;
-	private $logger;
-	private $logLevel;
+	private SubscriptionRepository $repository;
+	private LoggerInterface $logger;
+	private string $logLevel;
 
 	public function __construct( SubscriptionRepository $repository, LoggerInterface $logger ) {
 		$this->repository = $repository;

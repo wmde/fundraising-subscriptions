@@ -10,7 +10,7 @@ use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 /**
  * @covers WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */

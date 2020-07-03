@@ -11,15 +11,15 @@ use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class SubscriptionDuplicateValidator {
 
-	const SOURCE_NAME = 'subscription_duplicate_subscription';
+	public const SOURCE_NAME = 'subscription_duplicate_subscription';
 
-	private $repository;
-	private $cutoffDateTime;
+	private SubscriptionRepository $repository;
+	private \DateTime $cutoffDateTime;
 
 	public function __construct( SubscriptionRepository $repository, \DateTime $cutoffDateTime ) {
 		$this->repository = $repository;

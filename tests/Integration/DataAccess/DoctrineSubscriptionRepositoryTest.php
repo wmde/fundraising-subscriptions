@@ -4,20 +4,20 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\DataAccess;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
 
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class DoctrineSubscriptionRepositoryTest extends TestCase {

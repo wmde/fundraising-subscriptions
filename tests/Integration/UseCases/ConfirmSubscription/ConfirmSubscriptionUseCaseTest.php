@@ -14,12 +14,12 @@ use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSub
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSubscriptionUseCase
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class ConfirmSubscriptionUseCaseTest extends TestCase {
 
-	const CONFIRMATION_CODE = 'deadbeef';
+	private const CONFIRMATION_CODE = 'deadbeef';
 
 	private function newSubscription(): Subscription {
 		$subscription = new Subscription();

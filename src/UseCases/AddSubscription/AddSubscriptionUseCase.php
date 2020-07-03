@@ -6,14 +6,14 @@ namespace WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription;
 
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
-use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
+use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\FunValidators\ValidationResponse;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class AddSubscriptionUseCase {
@@ -26,7 +26,6 @@ class AddSubscriptionUseCase {
 
 	public function __construct( SubscriptionRepository $subscriptionRepository,
 		SubscriptionValidator $subscriptionValidator, TemplateMailerInterface $mailer ) {
-
 		$this->subscriptionRepository = $subscriptionRepository;
 		$this->subscriptionValidator = $subscriptionValidator;
 		$this->mailer = $mailer;
