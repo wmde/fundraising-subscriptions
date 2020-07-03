@@ -5,13 +5,13 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription;
 
 use WMDE\EmailAddress\EmailAddress;
-use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
+use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResponse;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class ConfirmSubscriptionUseCase {
@@ -26,7 +26,6 @@ class ConfirmSubscriptionUseCase {
 	}
 
 	public function confirmSubscription( string $confirmationCode ): ValidationResponse {
-
 		$subscription = $this->subscriptionRepository->findByConfirmationCode( $confirmationCode );
 
 		if ( $subscription === null ) {

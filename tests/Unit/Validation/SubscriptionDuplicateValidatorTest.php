@@ -11,7 +11,7 @@ use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidat
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  */
 class SubscriptionDuplicateValidatorTest extends \PHPUnit\Framework\TestCase {
 

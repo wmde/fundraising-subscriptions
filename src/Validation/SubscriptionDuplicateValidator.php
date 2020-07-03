@@ -11,7 +11,7 @@ use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class SubscriptionDuplicateValidator {

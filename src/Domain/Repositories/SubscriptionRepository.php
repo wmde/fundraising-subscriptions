@@ -7,7 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Domain\Repositories;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 interface SubscriptionRepository {

@@ -5,21 +5,21 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
+use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\FailedValidationResult;
 use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\SubscriptionRepositorySpy;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase;
 use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRequest;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
-use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\FailedValidationResult;
 use WMDE\FunValidators\ValidationResult;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class AddSubscriptionUseCaseTest extends TestCase {

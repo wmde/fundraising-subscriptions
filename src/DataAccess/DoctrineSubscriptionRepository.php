@@ -12,7 +12,7 @@ use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionReposit
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class DoctrineSubscriptionRepository implements SubscriptionRepository {
@@ -47,12 +47,11 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			->setParameter( 'cutoffDate', $cutoffDateTime, Type::DATETIME )
 			->getQuery();
 		try {
-			return (int) $query->getSingleScalarResult();
+			return (int)$query->getSingleScalarResult();
 		}
 		catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not count subscriptions, check your query and its parameters.', $e );
 		}
-
 	}
 
 	/**
