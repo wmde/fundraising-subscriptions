@@ -16,10 +16,10 @@ use WMDE\FunValidators\ValidationResult;
  */
 class SubscriptionDuplicateValidator {
 
-	const SOURCE_NAME = 'subscription_duplicate_subscription';
+	public const SOURCE_NAME = 'subscription_duplicate_subscription';
 
-	private $repository;
-	private $cutoffDateTime;
+	private SubscriptionRepository $repository;
+	private \DateTime $cutoffDateTime;
 
 	public function __construct( SubscriptionRepository $repository, \DateTime $cutoffDateTime ) {
 		$this->repository = $repository;

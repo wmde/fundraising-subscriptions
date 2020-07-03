@@ -19,7 +19,7 @@ use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSub
  */
 class ConfirmSubscriptionUseCaseTest extends TestCase {
 
-	const CONFIRMATION_CODE = 'deadbeef';
+	private const CONFIRMATION_CODE = 'deadbeef';
 
 	private function newSubscription(): Subscription {
 		$subscription = new Subscription();

@@ -17,7 +17,7 @@ use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionReposit
  */
 class DoctrineSubscriptionRepository implements SubscriptionRepository {
 
-	private $entityManager;
+	private EntityManager $entityManager;
 
 	public function __construct( EntityManager $entityManager ) {
 		$this->entityManager = $entityManager;
@@ -55,6 +55,13 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 	}
 
 	/**
+	 */
+
+	/**
+	 * @param string $confirmationCode
+	 *
+	 * @return Subscription|null
+	 *
 	 * @throws SubscriptionRepositoryException
 	 */
 	public function findByConfirmationCode( string $confirmationCode ): ?Subscription {
