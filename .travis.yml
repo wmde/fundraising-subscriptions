@@ -9,7 +9,7 @@ services:
   - docker
 
 install:
-  - travis_retry make composer install
+  - travis_retry make setup
 
 script:
   - make ci
