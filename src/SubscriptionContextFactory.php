@@ -5,8 +5,8 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Gedmo\Timestampable\TimestampableListener;
 
 class SubscriptionContextFactory {
