@@ -1,38 +1,34 @@
-# If the first argument is "composer"...
-ifeq (composer, $(firstword $(MAKECMDGOALS)))
-  # use the rest as arguments for "composer"
-  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_ARGS):;@:)
-endif
+current_user  := $(shell id -u)
+current_group := $(shell id -g)
+BUILD_DIR     := $(PWD)
+DOCKER_FLAGS  := --interactive --tty
+DOCKER_IMAGE  := wikimediade/fundraising-frontend
 
-.PHONY: ci test phpunit cs stan covers composer validate-composerfile
+install-php:
+	docker run --rm $(DOCKER_FLAGS) --volume $(BUILD_DIR):/app -w /app --volume ~/.composer:/composer --user $(current_user):$(current_group) $(DOCKER_IMAGE):composer composer install $(COMPOSER_FLAGS)
 
-ci: test cs validate-composerfile
+update-php:
+	docker run --rm $(DOCKER_FLAGS) --volume $(BUILD_DIR):/app -w /app --volume ~/.composer:/composer --user $(current_user):$(current_group) $(DOCKER_IMAGE):composer composer update $(COMPOSER_FLAGS)
+
+ci: covers phpunit cs stan
 
 test: covers phpunit
-
-cs: phpcs stan
-
-fix-cs:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpcbf
-
-phpunit:
-	docker-compose run --rm app ./vendor/bin/phpunit
-
-phpcs:
-	docker-compose run --rm app ./vendor/bin/phpcs
-
-stan:
-	docker-compose run --rm app ./vendor/bin/phpstan analyse --level=5 --no-progress src/ tests/
 
 covers:
 	docker-compose run --rm app ./vendor/bin/covers-validator
 
-validate-composerfile:
-	docker run --rm --interactive --tty --volume $(shell pwd):/app -w /app\
-	 --volume ~/.composer:/composer --user $(shell id -u):$(shell id -g) wikimediade/fundraising-frontend:composer composer validate --no-interaction
+phpunit:
+	docker-compose run --rm app ./vendor/bin/phpunit
 
-composer:
-	docker run --rm --interactive --tty --volume $(shell pwd):/app -w /app\
-	 --volume ~/.composer:/composer --user $(shell id -u):$(shell id -g) wikimediade/fundraising-frontend:composer composer --no-scripts $(filter-out $@,$(MAKECMDGOALS))
+cs:
+	docker-compose run --rm app ./vendor/bin/phpcs
+
+fix-cs:
+	docker-compose run --rm app ./vendor/bin/phpcbf
+
+stan:
+	docker-compose run --rm app ./vendor/bin/phpstan analyse --level=1 --no-progress src/ tests/
+
+setup: install-php
+
+.PHONY: install-php update-php ci test covers phpunit cs fix-cs stan setup
