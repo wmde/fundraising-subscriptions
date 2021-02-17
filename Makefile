@@ -12,13 +12,15 @@ update-php:
 
 ci: covers phpunit cs stan
 
-test: covers phpunit
+ci-with-coverage: phpunit-with-coverage cs stan
 
-covers:
-	docker-compose run --rm app ./vendor/bin/covers-validator
+test: phpunit
 
 phpunit:
-	docker-compose run --rm app ./vendor/bin/phpunit
+	docker-compose run --rm -e app ./vendor/bin/phpunit
+
+phpunit-with-coverage:
+	docker-compose run --rm -e XDEBUG_MODE=coverage app ./vendor/bin/phpunit
 
 cs:
 	docker-compose run --rm app ./vendor/bin/phpcs
@@ -31,4 +33,4 @@ stan:
 
 setup: install-php
 
-.PHONY: install-php update-php ci test covers phpunit cs fix-cs stan setup
+.PHONY: install-php update-php ci ci-with-coverage test phpunit phpunit-with-coverage cs fix-cs stan setup
