@@ -12,7 +12,7 @@ install:
   - travis_retry make setup
 
 script:
-  - make ci
+  - make ci-with-coverage
 
 after_success:
   - vendor/bin/phpunit --coverage-clover coverage.clover
