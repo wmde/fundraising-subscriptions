@@ -10,7 +10,7 @@ install-php:
 update-php:
 	docker run --rm $(DOCKER_FLAGS) --volume $(BUILD_DIR):/app -w /app --volume ~/.composer:/composer --user $(current_user):$(current_group) $(DOCKER_IMAGE):composer composer update $(COMPOSER_FLAGS)
 
-ci: covers phpunit cs stan
+ci: phpunit cs stan
 
 ci-with-coverage: phpunit-with-coverage cs stan
 
