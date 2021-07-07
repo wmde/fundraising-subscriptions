@@ -3,14 +3,14 @@
 	"license": "GPL-2.0-or-later",
 	"description": "Bounded Context for fundraising subcriptions",
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.0",
 
 		"doctrine/orm": "~2.7",
 		"gedmo/doctrine-extensions": "^3.0",
 		"psr/log": "~1.0",
 
 		"wmde/email-address": "~1.0",
-		"wmde/fun-validators": "~3.0.0"
+		"wmde/fun-validators": "~4.0"
 	},
 	"require-dev": {
 		"symfony/cache": "^5.3",
