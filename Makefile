@@ -21,7 +21,7 @@ phpunit:
 	docker-compose run --rm --no-deps app ./vendor/bin/phpunit
 
 phpunit-with-coverage:
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml run --rm --no-deps -e XDEBUG_MODE=coverage app_debug ./vendor/bin/phpunit $(COVERAGE_FLAGS)
+	docker-compose -f docker-compose.yml -f docker-compose.debug.yml run --rm --no-deps -e XDEBUG_MODE=coverage app_debug php -d memory_limit=1G ./vendor/bin/phpunit $(COVERAGE_FLAGS)
 
 cs:
 	docker-compose run --rm --no-deps app ./vendor/bin/phpcs
@@ -30,7 +30,7 @@ fix-cs:
 	docker-compose run --rm --no-deps app ./vendor/bin/phpcbf
 
 stan:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpstan analyse --level=1 --no-progress src/ tests/
+	docker-compose run --rm --no-deps app php -d memory_limit=1G ./vendor/bin/phpstan analyse --level=1 --no-progress src/ tests/
 
 setup: install-php
 
