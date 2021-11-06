@@ -4,7 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\DataAccess;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
@@ -44,7 +44,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			->where( $qb->expr()->eq( 's.email', ':email' ) )
 			->andWhere( $qb->expr()->gt( 's.createdAt', ':cutoffDate' ) )
 			->setParameter( 'email', $subscription->getEmail() )
-			->setParameter( 'cutoffDate', $cutoffDateTime, Type::DATETIME )
+			->setParameter( 'cutoffDate', $cutoffDateTime, Types::DATETIME_MUTABLE )
 			->getQuery();
 		try {
 			return (int)$query->getSingleScalarResult();
