@@ -6,7 +6,8 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\ORMSetup;
+use WMDE\Fundraising\SubscriptionContext\SubscriptionContextFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,6 +22,7 @@ class TestEnvironment {
 	}
 
 	public static function newInstance(): self {
+		$subscriptionContextFactory = new SubscriptionContextFactory();
 		$environment = new self(
 			[
 				'db' => [
@@ -29,7 +31,7 @@ class TestEnvironment {
 				],
 				'var-path' => '/tmp'
 			],
-			Setup::createConfiguration( true )
+			ORMSetup::createXMLMetadataConfiguration( $subscriptionContextFactory->getDoctrineMappingPaths() )
 		);
 		$environment->install();
 		return $environment;

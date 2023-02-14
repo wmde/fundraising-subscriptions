@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -29,13 +28,9 @@ class TestSubscriptionContextFactory {
 
 	public function getEntityManager(): EntityManager {
 		if ( $this->entityManager === null ) {
-			AnnotationRegistry::registerLoader( 'class_exists' );
-
-			$this->doctrineConfig->setMetadataDriverImpl( $this->factory->newMappingDriver() );
-
 			$eventManager = $this->setupEventSubscribers( $this->factory->newEventSubscribers() );
 
-			$this->entityManager = EntityManager::create(
+			$this->entityManager = new EntityManager(
 				$this->connection,
 				$this->doctrineConfig,
 				$eventManager
@@ -46,7 +41,7 @@ class TestSubscriptionContextFactory {
 	}
 
 	private function setupEventSubscribers( array $eventSubscribers ): EventManager {
-		$eventManager = $this->connection->getEventManager();
+		$eventManager = new EventManager();
 		foreach ( $eventSubscribers as $eventSubscriber ) {
 			$eventManager->addEventSubscriber( $eventSubscriber );
 		}
