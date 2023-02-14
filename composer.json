@@ -13,7 +13,7 @@
 		"wmde/fun-validators": "~4.0"
 	},
 	"require-dev": {
-		"symfony/cache": "^5.3",
+		"symfony/cache": "^6.2",
 		"phpunit/phpunit": "~10.0.7",
 		"wmde/fundraising-phpcs": "~7.0",
 		"phpstan/phpstan": "~1.7"
