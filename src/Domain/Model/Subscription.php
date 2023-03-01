@@ -113,7 +113,7 @@ class Subscription {
 		return $this->tracking;
 	}
 
-	public function setTracking( string $tracking ) {
+	public function setTracking( string $tracking ): void {
 		$this->tracking = $tracking;
 	}
 
@@ -127,7 +127,7 @@ class Subscription {
 		return $this->source;
 	}
 
-	public function markAsConfirmed() {
+	public function markAsConfirmed(): void {
 		$this->status = self::STATUS_CONFIRMED;
 	}
 

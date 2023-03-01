@@ -6,7 +6,6 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\UseCases\AddSubscripti
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidator;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
