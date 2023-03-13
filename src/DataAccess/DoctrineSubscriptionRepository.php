@@ -31,8 +31,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 		try {
 			$this->entityManager->persist( $subscription );
 			$this->entityManager->flush();
-		}
-		catch ( ORMException $e ) {
+		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not store subscription.', $e );
 		}
 	}
@@ -48,8 +47,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			->getQuery();
 		try {
 			return (int)$query->getSingleScalarResult();
-		}
-		catch ( ORMException $e ) {
+		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not count subscriptions, check your query and its parameters.', $e );
 		}
 	}
@@ -69,8 +67,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			return $this->entityManager->getRepository( Subscription::class )->findOneBy( [
 				'confirmationCode' => $confirmationCode
 			] );
-		}
-		catch ( ORMException $e ) {
+		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not find subscriptions by confirmation code.', $e );
 		}
 	}

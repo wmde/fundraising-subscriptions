@@ -38,8 +38,7 @@ class LoggingSubscriptionRepository implements SubscriptionRepository {
 	public function storeSubscription( Subscription $subscription ): void {
 		try {
 			$this->repository->storeSubscription( $subscription );
-		}
-		catch ( SubscriptionRepositoryException $ex ) {
+		} catch ( SubscriptionRepositoryException $ex ) {
 			$this->logger->log( $this->logLevel, $ex->getMessage(), [ self::CONTEXT_EXCEPTION_KEY => $ex ] );
 			throw $ex;
 		}
@@ -57,8 +56,7 @@ class LoggingSubscriptionRepository implements SubscriptionRepository {
 	public function countSimilar( Subscription $subscription, \DateTime $cutoffDateTime ): int {
 		try {
 			return $this->repository->countSimilar( $subscription, $cutoffDateTime );
-		}
-		catch ( SubscriptionRepositoryException $ex ) {
+		} catch ( SubscriptionRepositoryException $ex ) {
 			$this->logger->log( $this->logLevel, $ex->getMessage(), [ self::CONTEXT_EXCEPTION_KEY => $ex ] );
 			throw $ex;
 		}
@@ -75,8 +73,7 @@ class LoggingSubscriptionRepository implements SubscriptionRepository {
 	public function findByConfirmationCode( string $confirmationCode ): ?Subscription {
 		try {
 			return $this->repository->findByConfirmationCode( $confirmationCode );
-		}
-		catch ( SubscriptionRepositoryException $ex ) {
+		} catch ( SubscriptionRepositoryException $ex ) {
 			$this->logger->log( $this->logLevel, $ex->getMessage(), [ self::CONTEXT_EXCEPTION_KEY => $ex ] );
 			throw $ex;
 		}

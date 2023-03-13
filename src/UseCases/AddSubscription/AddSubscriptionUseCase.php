@@ -12,23 +12,15 @@ use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\FunValidators\ValidationResponse;
 
-/**
- * @license GPL-2.0-or-later
- * @author Gabriel Birke < gabriel.birke@wikimedia.de >
- */
 class AddSubscriptionUseCase {
 
 	private const CONFIRMATION_CODE_LENGTH_BYTES = 16;
 
-	private $subscriptionRepository;
-	private $subscriptionValidator;
-	private $mailer;
-
-	public function __construct( SubscriptionRepository $subscriptionRepository,
-		SubscriptionValidator $subscriptionValidator, TemplateMailerInterface $mailer ) {
-		$this->subscriptionRepository = $subscriptionRepository;
-		$this->subscriptionValidator = $subscriptionValidator;
-		$this->mailer = $mailer;
+	public function __construct(
+		private readonly SubscriptionRepository $subscriptionRepository,
+		private readonly SubscriptionValidator $subscriptionValidator,
+		private readonly TemplateMailerInterface $mailer
+	) {
 	}
 
 	/**

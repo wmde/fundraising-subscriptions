@@ -10,19 +10,12 @@ use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResponse;
 
-/**
- * @license GPL-2.0-or-later
- * @author Gabriel Birke < gabriel.birke@wikimedia.de >
- */
 class ConfirmSubscriptionUseCase {
 
-	private $subscriptionRepository;
-
-	private $mailer;
-
-	public function __construct( SubscriptionRepository $subscriptionRepository, TemplateMailerInterface $mailer ) {
-		$this->subscriptionRepository = $subscriptionRepository;
-		$this->mailer = $mailer;
+	public function __construct(
+		private readonly SubscriptionRepository $subscriptionRepository,
+		private readonly TemplateMailerInterface $mailer
+	) {
 	}
 
 	public function confirmSubscription( string $confirmationCode ): ValidationResponse {
