@@ -18,16 +18,16 @@ use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
  */
 class DoctrineSubscriptionRepositoryTest extends TestCase {
 
-	/**
-	 * @var EntityManager
-	 */
-	private $entityManager;
+	private EntityManager $entityManager;
 
 	public function setUp(): void {
 		$this->entityManager = TestEnvironment::newInstance()->getEntityManager();
 		parent::setUp();
 	}
 
+	/**
+	 * @return ObjectRepository<Subscription>
+	 */
 	private function getOrmRepository(): ObjectRepository {
 		return $this->entityManager->getRepository( Subscription::class );
 	}

@@ -86,7 +86,7 @@ class SubscriptionValidatorTest extends TestCase {
 		);
 	}
 
-	public function testOnlyEmailIsARequiredField() {
+	public function testOnlyEmailIsARequiredField(): void {
 		$subscriptionValidator = new SubscriptionValidator(
 			$this->newPassingEmailValidator(),
 			$this->newPassingDuplicateValidator()

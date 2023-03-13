@@ -6,6 +6,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Tests;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 
 class SchemaCreator {
 	private EntityManager $entityManager;
@@ -16,11 +17,11 @@ class SchemaCreator {
 		$this->schemaTool = new SchemaTool( $this->entityManager );
 	}
 
-	public function createSchema() {
+	public function createSchema(): void {
 		$this->getSchemaTool()->createSchema( $this->getClassMetaData() );
 	}
 
-	public function dropSchema() {
+	public function dropSchema(): void {
 		$this->getSchemaTool()->dropSchema( $this->getClassMetaData() );
 	}
 
@@ -28,6 +29,9 @@ class SchemaCreator {
 		return $this->schemaTool;
 	}
 
+	/**
+	 * @return \Doctrine\ORM\Mapping\ClassMetadata<Subscription>[]
+	 */
 	private function getClassMetaData(): array {
 		return $this->entityManager->getMetadataFactory()->getAllMetadata();
 	}

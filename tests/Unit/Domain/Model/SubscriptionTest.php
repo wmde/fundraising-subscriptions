@@ -8,25 +8,21 @@ use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 
 /**
- * @covers WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription
- *
- * @license GPL-2.0-or-later
- * @author Gabriel Birke < gabriel.birke@wikimedia.de >
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @covers \WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription
  */
 class SubscriptionTest extends TestCase {
 
-	public function testSetAndGetSource() {
+	public function testSetAndGetSource(): void {
 		$subscription = new Subscription();
 		$subscription->setSource( 'foobar' );
 		$this->assertSame( 'foobar', $subscription->getSource() );
 	}
 
-	public function testWhenSubscriptionIsNew_isUnconfirmedReturnsTrue() {
+	public function testWhenSubscriptionIsNew_isUnconfirmedReturnsTrue(): void {
 		$this->assertTrue( ( new Subscription() )->isUnconfirmed() );
 	}
 
-	public function testWhenConfirmed_isUnconfirmedReturnsFalse() {
+	public function testWhenConfirmed_isUnconfirmedReturnsFalse(): void {
 		$subscription = new Subscription();
 		$subscription->markAsConfirmed();
 

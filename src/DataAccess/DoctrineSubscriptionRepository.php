@@ -46,7 +46,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			->setParameter( 'cutoffDate', $cutoffDateTime, Types::DATETIME_MUTABLE )
 			->getQuery();
 		try {
-			return (int)$query->getSingleScalarResult();
+			return intval( $query->getSingleScalarResult() );
 		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not count subscriptions, check your query and its parameters.', $e );
 		}
