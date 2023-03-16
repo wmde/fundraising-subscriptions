@@ -7,6 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\Validation;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\FunValidators\CanValidateField;
+use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
 use WMDE\FunValidators\Validators\EmailValidator;
 use WMDE\FunValidators\Validators\RequiredFieldValidator;
@@ -41,6 +42,10 @@ class SubscriptionValidator {
 		) );
 	}
 
+	/**
+	 * @param Subscription $subscription
+	 * @return array<ConstraintViolation|null>
+	 */
 	private function getRequiredFieldViolations( Subscription $subscription ): array {
 		$validator = new RequiredFieldValidator();
 

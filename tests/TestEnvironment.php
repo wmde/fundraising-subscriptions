@@ -17,20 +17,13 @@ class TestEnvironment {
 
 	private TestSubscriptionContextFactory $factory;
 
-	private function __construct( array $config, Configuration $doctrineConfig ) {
-		$this->factory = new TestSubscriptionContextFactory( $config, $doctrineConfig );
+	private function __construct( Configuration $doctrineConfig ) {
+		$this->factory = new TestSubscriptionContextFactory( $doctrineConfig );
 	}
 
 	public static function newInstance(): self {
 		$subscriptionContextFactory = new SubscriptionContextFactory();
 		$environment = new self(
-			[
-				'db' => [
-					'driver' => 'pdo_sqlite',
-					'memory' => true,
-				],
-				'var-path' => '/tmp'
-			],
 			ORMSetup::createXMLMetadataConfiguration( $subscriptionContextFactory->getDoctrineMappingPaths() )
 		);
 		$environment->install();
