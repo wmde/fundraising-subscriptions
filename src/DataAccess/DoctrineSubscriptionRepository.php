@@ -46,7 +46,13 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 			->setParameter( 'cutoffDate', $cutoffDateTime, Types::DATETIME_MUTABLE )
 			->getQuery();
 		try {
-			return intval( $query->getSingleScalarResult() );
+			/**
+			 * PhpStan on level 9 does not like mixed types being passed into intval()
+			 * so we explicitly tell it the type is what we expect to get from Doctrine
+			 * @var float|int|string|null $count
+			 */
+			$count = $query->getSingleScalarResult();
+			return intval( $count );
 		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( 'Could not count subscriptions, check your query and its parameters.', $e );
 		}
