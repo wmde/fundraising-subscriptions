@@ -35,6 +35,7 @@ class Subscription {
 
 	public function __construct() {
 		$this->setStatus( self::STATUS_NEW );
+		$this->createdAt = new DateTime();
 	}
 
 	public function setEmail( string $email ): self {
