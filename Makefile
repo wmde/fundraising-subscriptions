@@ -11,9 +11,9 @@ install-php:
 update-php:
 	docker run --rm $(DOCKER_FLAGS) --volume $(BUILD_DIR):/app -w /app --volume ~/.composer:/composer --user $(current_user):$(current_group) $(DOCKER_IMAGE):composer composer update $(COMPOSER_FLAGS)
 
-ci: phpunit cs stan
+ci: phpunit cs stan architecture-check
 
-ci-with-coverage: phpunit-with-coverage cs stan
+ci-with-coverage: phpunit-with-coverage cs stan architecture-check
 
 test: phpunit
 
@@ -32,6 +32,10 @@ fix-cs:
 stan:
 	docker-compose run --rm --no-deps app ./vendor/bin/phpstan analyse --level=9 --no-progress src/ tests/
 
+architecture-check:
+	docker-compose run --rm --no-deps app ./vendor/bin/deptrac analyse --fail-on-uncovered --report-uncovered
+
+
 setup: install-php
 
-.PHONY: install-php update-php ci ci-with-coverage test phpunit phpunit-with-coverage cs fix-cs stan setup
+.PHONY: install-php update-php ci ci-with-coverage test phpunit phpunit-with-coverage cs fix-cs stan setup architecture-check

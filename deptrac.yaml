@@ -1,0 +1,82 @@
+deptrac:
+  paths:
+    - ./src
+  exclude_files:
+    - '#.*tests.*#'
+  layers:
+    - name: Domain
+      collectors:
+        - type: classLike
+          value: WMDE\\Fundraising\\SubscriptionContext\\Domain\\.*
+    - name: UseCase
+      collectors:
+        - type: classLike
+          value: WMDE\\Fundraising\\SubscriptionContext\\UseCases.*
+    - name: DomainValidators
+      collectors:
+        - type: classLike
+          value: WMDE\\Fundraising\\SubscriptionContext\\Validation.*
+
+    - name: DataAccess
+      collectors:
+        - type: classLike
+          value: WMDE\\Fundraising\\SubscriptionContext\\DataAccess.*
+    - name: ServiceInterface
+      collectors:
+        - type: interface
+          value: WMDE\\Fundraising\\SubscriptionContext\\Services.*
+        - type: interface
+          value: WMDE\\Fundraising\\SubscriptionContext\\Infrastructure.*
+    - name: Service
+      collectors:
+        - type: class
+          value: WMDE\\Fundraising\\SubscriptionContext\\Services.*
+    # Domain libraries from WMDE
+    - name: DomainLibrary
+      collectors:
+        - type: classNameRegex
+          value: /WMDE\\EmailAddress\\EmailAddress/
+        - type: classNameRegex
+          value: /WMDE\\FunValidators\\.*/
+    # External Vendor libraries
+    - name: Doctrine
+      collectors:
+        - type: classNameRegex
+          value: /Doctrine\\.*/
+  ruleset:
+    Domain:
+      - DomainLibrary
+    DomainValidators:
+      - Domain
+      - DomainLibrary
+    UseCase:
+      - Domain
+      - DataAccess
+      - ServiceInterface
+      - DomainLibrary
+      - DomainValidators
+    DataAccess:
+      - Domain
+      - DomainLibrary
+      - Doctrine
+    Service:
+      - DomainLibrary
+      - Domain
+      - DataAccess
+      - ServiceInterface
+      - Doctrine
+    ServiceInterface:
+      - Domain
+      - DomainLibrary
+  formatters:
+    graphviz:
+      groups:
+        Service:
+          - Service
+          - ServiceInterface
+        Vendor:
+          - Doctrine
+          - Guzzle
+          - Sofort
+
+

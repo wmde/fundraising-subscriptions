@@ -15,7 +15,8 @@
 		"phpunit/phpunit": "~10.1.1",
 		"wmde/fundraising-phpcs": "~8.0",
 		"phpstan/phpstan": "~1.7",
-		"symfony/cache": "^6.1"
+		"symfony/cache": "^6.1",
+		"qossmic/deptrac-shim": "^1.0"
 	},
 	"repositories": [
 		{
