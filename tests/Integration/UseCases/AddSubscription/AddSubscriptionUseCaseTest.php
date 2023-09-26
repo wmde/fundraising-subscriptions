@@ -97,7 +97,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 		$this->mailer->expects( $this->once() )
 			->method( 'sendMail' )
 			->with(
-				$this->equalTo( new EmailAddress( self::A_SPECIFIC_EMAIL_ADDRESS ) ),
+				new EmailAddress( self::A_SPECIFIC_EMAIL_ADDRESS ),
 				$this->callback( function ( $value ) {
 					$this->assertIsArray( $value );
 					$this->assertArrayHasKey( 'subscription', $value );
