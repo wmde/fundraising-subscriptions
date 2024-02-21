@@ -5,9 +5,10 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\DataAccess;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
@@ -62,7 +63,10 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	public function testDatabaseLayerExceptionsAreConvertedToDomainExceptions(): void {
 		$entityManager = $this->createMock( EntityManager::class );
 
-		$entityManager->expects( $this->once() )->method( 'persist' )->willThrowException( new ORMException() );
+		$entityManager->expects( $this->once() )->method( 'persist' )->willThrowException(
+			new class() extends RuntimeException implements ORMException {
+			}
+		);
 		$repository = new DoctrineSubscriptionRepository( $entityManager );
 		$subscription = new Subscription();
 		$subscription->setEmail( 'nyan@awesomecats.com' );
