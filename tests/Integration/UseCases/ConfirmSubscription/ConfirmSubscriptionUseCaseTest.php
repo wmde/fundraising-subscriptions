@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\ConfirmSubscription;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
@@ -12,11 +13,11 @@ use WMDE\Fundraising\SubscriptionContext\Tests\Fixtures\InMemorySubscriptionRepo
 use WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSubscriptionUseCase;
 
 /**
- * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\ConfirmSubscription\ConfirmSubscriptionUseCase
  *
  * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
+#[CoversClass( ConfirmSubscriptionUseCase::class )]
 class ConfirmSubscriptionUseCaseTest extends TestCase {
 
 	private const CONFIRMATION_CODE = 'deadbeef';

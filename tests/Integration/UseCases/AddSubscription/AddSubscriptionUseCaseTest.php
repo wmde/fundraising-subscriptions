@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WMDE\EmailAddress\EmailAddress;
@@ -17,11 +18,11 @@ use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\FunValidators\ValidationResult;
 
 /**
- * @covers \WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\AddSubscriptionUseCase
  *
  * @license GPL-2.0-or-later
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
+#[CoversClass( AddSubscriptionUseCase::class )]
 class AddSubscriptionUseCaseTest extends TestCase {
 
 	private const A_SPECIFIC_EMAIL_ADDRESS = 'curious@nyancat.com';

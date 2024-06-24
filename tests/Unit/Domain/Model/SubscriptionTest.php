@@ -4,12 +4,11 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 
-/**
- * @covers \WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription
- */
+#[CoversClass( Subscription::class )]
 class SubscriptionTest extends TestCase {
 
 	public function testSetAndGetSource(): void {
