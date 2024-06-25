@@ -4,9 +4,11 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\DataAccess;
 
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
@@ -14,9 +16,7 @@ use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
 use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
 
-/**
- * @covers \WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository
- */
+#[CoversClass( DoctrineSubscriptionRepository::class )]
 class DoctrineSubscriptionRepositoryTest extends TestCase {
 
 	private EntityManager $entityManager;
@@ -46,7 +46,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 		$firstSubscription = $this->persistFirstSubscription();
 		$this->entityManager->flush();
 		$repository = new DoctrineSubscriptionRepository( $this->entityManager );
-		$this->assertSame( 1, $repository->countSimilar( $firstSubscription, new \DateTime( '100 years ago' ) ) );
+		$this->assertSame( 1, $repository->countSimilar( $firstSubscription, new DateTime( '100 years ago' ) ) );
 	}
 
 	public function testMultipleSubscriptions_onlySimilarAreCounted(): void {
@@ -56,8 +56,8 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 
 		$this->entityManager->flush();
 		$repository = new DoctrineSubscriptionRepository( $this->entityManager );
-		$this->assertSame( 1, $repository->countSimilar( $thirdSubscription, new \DateTime( '1 hour ago' ) ) );
-		$this->assertSame( 2, $repository->countSimilar( $thirdSubscription, new \DateTime( '100 years ago' ) ) );
+		$this->assertSame( 1, $repository->countSimilar( $thirdSubscription, new DateTime( '1 hour ago' ) ) );
+		$this->assertSame( 2, $repository->countSimilar( $thirdSubscription, new DateTime( '100 years ago' ) ) );
 	}
 
 	public function testDatabaseLayerExceptionsAreConvertedToDomainExceptions(): void {
@@ -78,7 +78,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	private function persistFirstSubscription(): Subscription {
 		$subscription = new Subscription();
 		$subscription->setEmail( 'nyan@awesomecats.com' );
-		$subscription->setCreatedAt( new \DateTime( '10 minutes ago' ) );
+		$subscription->setCreatedAt( new DateTime( '10 minutes ago' ) );
 		$this->entityManager->persist( $subscription );
 		return $subscription;
 	}
@@ -86,7 +86,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	private function persistSecondSubscription(): Subscription {
 		$subscription = new Subscription();
 		$subscription->setEmail( 'unicorn@dancingonrainbows.com' );
-		$subscription->setCreatedAt( new \DateTime( '10 days ago' ) );
+		$subscription->setCreatedAt( new DateTime( '10 days ago' ) );
 		$this->entityManager->persist( $subscription );
 		return $subscription;
 	}
@@ -94,7 +94,7 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 	private function persistThirdSubscription(): Subscription {
 		$subscription = new Subscription();
 		$subscription->setEmail( 'unicorn@dancingonrainbows.com' );
-		$subscription->setCreatedAt( new \DateTime( '10 minutes ago' ) );
+		$subscription->setCreatedAt( new DateTime( '10 minutes ago' ) );
 		$this->entityManager->persist( $subscription );
 		return $subscription;
 	}

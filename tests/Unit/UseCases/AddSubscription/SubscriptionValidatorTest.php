@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\UseCases\AddSubscription;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
@@ -14,10 +15,9 @@ use WMDE\FunValidators\ValidationResult;
 use WMDE\FunValidators\Validators\EmailValidator;
 
 /**
- * @covers \WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator
- *
  * @license GPL-2.0-or-later
  */
+#[CoversClass( SubscriptionValidator::class )]
 class SubscriptionValidatorTest extends TestCase {
 
 	/**
