@@ -27,22 +27,22 @@ ci-with-coverage: phpunit-with-coverage cs stan architecture-check
 test: phpunit
 
 phpunit:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpunit $(progress_opts)
+	docker compose run --rm --no-deps app ./vendor/bin/phpunit $(progress_opts)
 
 phpunit-with-coverage:
-	docker-compose -f docker-compose.yml -f docker-compose.debug.yml run --rm --no-deps -e XDEBUG_MODE=coverage app_debug ./vendor/bin/phpunit $(COVERAGE_FLAGS) $(progress_opts)
+	docker compose -f docker-compose.yml -f docker-compose.debug.yml run --rm --no-deps -e XDEBUG_MODE=coverage app_debug ./vendor/bin/phpunit $(COVERAGE_FLAGS) $(progress_opts)
 
 cs:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpcs $(phpcs_progress_opts)
+	docker compose run --rm --no-deps app ./vendor/bin/phpcs $(phpcs_progress_opts)
 
 fix-cs:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpcbf
+	docker compose run --rm --no-deps app ./vendor/bin/phpcbf
 
 stan:
-	docker-compose run --rm --no-deps app ./vendor/bin/phpstan analyse --level=9 $(progress_opts) src/ tests/
+	docker compose run --rm --no-deps app ./vendor/bin/phpstan analyse --level=9 $(progress_opts) src/ tests/
 
 architecture-check:
-	docker-compose run --rm --no-deps app ./vendor/bin/deptrac analyse $(progress_opts) --fail-on-uncovered --report-uncovered
+	docker compose run --rm --no-deps app ./vendor/bin/deptrac analyse $(progress_opts) --fail-on-uncovered --report-uncovered
 
 
 setup: install-php
