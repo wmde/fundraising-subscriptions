@@ -18,9 +18,9 @@ file that just defines a dependency on `wmde/fundraising-subscriptions` 1.x:
 
 ## Development
 
-For development you need to have Docker and Docker-compose installed. Local PHP and Composer are not needed.
+For development you need to have Docker and Docker compose installed. Local PHP and Composer are not needed.
 
-    sudo apt-get install docker docker-compose
+    sudo apt-get install docker docker compose
 
 ### Running Composer
 
@@ -50,7 +50,7 @@ To run just the PHPUnit tests run
 
 To run only a subset of PHPUnit tests or otherwise pass flags to PHPUnit, run
 
-    docker-compose run --rm app ./vendor/bin/phpunit --filter SomeClassNameOrFilter
+    docker compose run --rm app ./vendor/bin/phpunit --filter SomeClassNameOrFilter
 
 ## Architecture
 
