@@ -48,7 +48,7 @@ class Subscription {
 		return $this->email;
 	}
 
-	public function setExport( DateTime $export = null ): self {
+	public function setExport( ?DateTime $export = null ): self {
 		$this->export = $export;
 
 		return $this;
@@ -58,7 +58,7 @@ class Subscription {
 		return $this->export;
 	}
 
-	public function setBackup( DateTime $backup = null ): self {
+	public function setBackup( ?DateTime $backup = null ): self {
 		$this->backup = $backup;
 
 		return $this;
