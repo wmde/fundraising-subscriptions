@@ -31,6 +31,7 @@ class SchemaCreator {
 	}
 
 	/**
+	 * @phpstan-return list<ClassMetadata<Subscription>>
 	 * @return ClassMetadata<Subscription>[]
 	 */
 	private function getClassMetaData(): array {
