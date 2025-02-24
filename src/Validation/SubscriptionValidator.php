@@ -6,7 +6,6 @@ namespace WMDE\Fundraising\SubscriptionContext\Validation;
 
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepositoryException;
-use WMDE\FunValidators\CanValidateField;
 use WMDE\FunValidators\ConstraintViolation;
 use WMDE\FunValidators\ValidationResult;
 use WMDE\FunValidators\Validators\EmailValidator;
@@ -17,7 +16,6 @@ use WMDE\FunValidators\Validators\RequiredFieldValidator;
  * @author Gabriel Birke < gabriel.birke@wikimedia.de >
  */
 class SubscriptionValidator {
-	use CanValidateField;
 
 	public const SOURCE_EMAIL = 'email';
 
@@ -37,7 +35,7 @@ class SubscriptionValidator {
 	public function validate( Subscription $subscription ): ValidationResult {
 		return new ValidationResult( ...array_filter( array_merge(
 			$this->getRequiredFieldViolations( $subscription ),
-			[ $this->getFieldViolation( $this->mailValidator->validate( $subscription->getEmail() ), self::SOURCE_EMAIL ) ],
+			$this->mailValidator->validate( $subscription->getEmail() )->setSourceForAllViolations( self::SOURCE_EMAIL )->getViolations(),
 			$this->duplicateValidator->validate( $subscription )->getViolations() )
 		) );
 	}
@@ -49,9 +47,7 @@ class SubscriptionValidator {
 	private function getRequiredFieldViolations( Subscription $subscription ): array {
 		$validator = new RequiredFieldValidator();
 
-		return [
-			$this->getFieldViolation( $validator->validate( $subscription->getEmail() ), self::SOURCE_EMAIL )
-		];
+		return $validator->validate( $subscription->getEmail() )->setSourceForAllViolations( self::SOURCE_EMAIL )->getViolations();
 	}
 
 }
