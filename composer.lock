@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e2f7f73923b466c3f1662157e57ea98",
+    "content-hash": "f0687dc66552359bb115c632885608a5",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -1679,16 +1679,16 @@
         },
         {
             "name": "wmde/fun-validators",
-            "version": "v4.2.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wmde/fun-validators",
-                "reference": "71abd74a28047008e7a7213ed39abf98558ad87c"
+                "reference": "f84ace7f1b4d29984e8a9f4c32c786acb1078cc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wmde/fun-validators/zipball/71abd74a28047008e7a7213ed39abf98558ad87c",
-                "reference": "71abd74a28047008e7a7213ed39abf98558ad87c",
+                "url": "https://api.github.com/repos/wmde/fun-validators/zipball/f84ace7f1b4d29984e8a9f4c32c786acb1078cc0",
+                "reference": "f84ace7f1b4d29984e8a9f4c32c786acb1078cc0",
                 "shasum": ""
             },
             "require": {
@@ -1719,7 +1719,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "General and shared validation services created as part of the WMDE fundraising software",
-            "time": "2025-02-21T17:33:47+00:00"
+            "time": "2025-02-24T14:22:36+00:00"
         }
     ],
     "packages-dev": [
@@ -4234,5 +4234,5 @@
         "php": ">=8.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
