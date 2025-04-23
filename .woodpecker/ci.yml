@@ -2,11 +2,6 @@ clone:
   git:
     image: woodpeckerci/plugin-git
     settings:
-      # "partial: false" and depth will copy several commits from the source repo,
-      # enabling history checks for the ocular tool
-      # "lfs: false" disables downloading resources from LFS, which we don't use
-      partial: false
-      depth: 10
       lfs: false
 
 
