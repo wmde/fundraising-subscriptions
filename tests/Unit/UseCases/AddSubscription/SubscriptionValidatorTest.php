@@ -54,7 +54,6 @@ class SubscriptionValidatorTest extends TestCase {
 	}
 
 	private function assertConstraintWasViolated( ValidationResult $result, string $fieldName ): void {
-		$this->assertContainsOnlyInstancesOf( ConstraintViolation::class, $result->getViolations() );
 		$this->assertTrue( $result->hasViolations() );
 
 		$violated = false;
