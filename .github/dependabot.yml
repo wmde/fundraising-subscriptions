@@ -6,9 +6,18 @@ updates:
   # look for major+minor dependency updates on a daily basis
   - package-ecosystem: "composer" # See documentation for possible values
     directory: "/" # Location of package manifests
-    target-branch: main # this line is needed as a workaround, see https://github.com/dependabot/dependabot-core/issues/1778
+
+    # this line is needed as a workaround to have two groups of updates for the same
+    # package ecosystem. See https://github.com/dependabot/dependabot-core/issues/1778
+    # for the feature request to have a dependabot group for each semver type
+    target-branch: main
+
     schedule:
       interval: "daily"
+    groups:
+      minor-version-updates:
+        update-types:
+          - minor
     ignore:
       - dependency-name: "*"
         update-types:
