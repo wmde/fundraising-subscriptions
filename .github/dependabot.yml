@@ -11,6 +11,10 @@ updates:
       interval: "daily"
     reviewers:
       - "wmde/funtech-core"
+    groups:
+      minor-version-updates:
+        update-types:
+          - minor
     ignore:
       - dependency-name: "*"
         update-types:
