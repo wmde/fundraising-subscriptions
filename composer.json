@@ -16,7 +16,7 @@
 		"wmde/fundraising-phpcs": "~12.0",
 		"phpstan/phpstan": "~2.1",
 		"symfony/cache": "^7.2",
-		"deptrac/deptrac": "^3.0"
+		"deptrac/deptrac": "^4.0"
 	},
 	"repositories": [
 		{
