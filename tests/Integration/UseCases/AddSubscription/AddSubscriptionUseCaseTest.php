@@ -17,11 +17,6 @@ use WMDE\Fundraising\SubscriptionContext\UseCases\AddSubscription\SubscriptionRe
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionValidator;
 use WMDE\FunValidators\ValidationResult;
 
-/**
- *
- * @license GPL-2.0-or-later
- * @author Gabriel Birke < gabriel.birke@wikimedia.de >
- */
 #[CoversClass( AddSubscriptionUseCase::class )]
 class AddSubscriptionUseCaseTest extends TestCase {
 

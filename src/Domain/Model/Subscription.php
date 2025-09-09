@@ -18,10 +18,7 @@ class Subscription {
 
 	private string $confirmationCode;
 
-	/**
-	 * @var int
-	 * @phpstan-ignore-next-line
-	 */
+	// @phpstan-ignore-next-line
 	private int $id;
 
 	private string $tracking;
