@@ -9,10 +9,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use WMDE\Fundraising\SubscriptionContext\SubscriptionContextFactory;
 
-/**
- * @license GPL-2.0-or-later
- * @author Gabriel Birke <gabriel.birke@wikimedia.de>
- */
 class TestEnvironment {
 
 	private TestSubscriptionContextFactory $factory;
@@ -23,9 +19,9 @@ class TestEnvironment {
 
 	public static function newInstance(): self {
 		$subscriptionContextFactory = new SubscriptionContextFactory();
-		$environment = new self(
-			ORMSetup::createXMLMetadataConfiguration( $subscriptionContextFactory->getDoctrineMappingPaths() )
-		);
+		$config = ORMSetup::createXMLMetadataConfiguration( $subscriptionContextFactory->getDoctrineMappingPaths() );
+		$config->enableNativeLazyObjects( true );
+		$environment = new self( $config );
 		$environment->install();
 		return $environment;
 	}
@@ -35,7 +31,7 @@ class TestEnvironment {
 
 		try {
 			$schemaCreator->dropSchema();
-		} catch ( \Exception $ex ) {
+		} catch ( \Exception ) {
 		}
 
 		$schemaCreator->createSchema();
