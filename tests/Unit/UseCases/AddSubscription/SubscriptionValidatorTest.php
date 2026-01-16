@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Unit\UseCases\AddSubscription;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidator;
@@ -21,26 +21,26 @@ use WMDE\FunValidators\Validators\EmailValidator;
 class SubscriptionValidatorTest extends TestCase {
 
 	/**
-	 * @return SubscriptionDuplicateValidator&MockObject
+	 * @return SubscriptionDuplicateValidator&Stub
 	 */
 	private function newPassingDuplicateValidator(): SubscriptionDuplicateValidator {
-		$mock = $this->createMock( SubscriptionDuplicateValidator::class );
-
-		$mock->method( 'validate' )->willReturn( new ValidationResult() );
-		return $mock;
+		return $this->createConfiguredStub( SubscriptionDuplicateValidator::class, [
+			'validate' => new ValidationResult(),
+		] );
 	}
 
 	private function newPassingEmailValidator(): EmailValidator {
-		$mock = $this->createMock( EmailValidator::class );
-		$mock->method( 'validate' )->willReturn( new ValidationResult() );
-		return $mock;
+		return $this->createConfiguredStub( EmailValidator::class, [
+			'validate' => new ValidationResult(),
+		] );
 	}
 
 	public function testGivenFailingEmailValidation_subscriptionValidationFails(): void {
-		$mailValidator = $this->createMock( EmailValidator::class );
-		$mailValidator->method( 'validate' )->willReturn( new ValidationResult(
-			new ConstraintViolation( 'this is not a mail addess', 'invalid_format' ) )
-		);
+		$mailValidator = $this->createConfiguredStub( EmailValidator::class, [
+			'validate' => new ValidationResult(
+				new ConstraintViolation( 'this is not a mail addess', 'invalid_format' )
+			),
+		] );
 		$subscriptionValidator = new SubscriptionValidator(
 			$mailValidator,
 			$this->newPassingDuplicateValidator(),
@@ -70,11 +70,11 @@ class SubscriptionValidatorTest extends TestCase {
 	}
 
 	public function testGivenDuplicateSubscription_newSubscriptionIsInvalid(): void {
-		$failingDuplicateValidator = $this->createMock( SubscriptionDuplicateValidator::class );
-
-		$failingDuplicateValidator->method( 'validate' )->willReturn( new ValidationResult(
-			new ConstraintViolation( '', 'duplicate_subscription', SubscriptionDuplicateValidator::SOURCE_NAME )
-		) );
+		$failingDuplicateValidator = $this->createConfiguredStub( SubscriptionDuplicateValidator::class, [
+			'validate' => new ValidationResult(
+				new ConstraintViolation( '', 'duplicate_subscription', SubscriptionDuplicateValidator::SOURCE_NAME )
+			),
+		] );
 		$subscriptionValidator = new SubscriptionValidator(
 			$this->newPassingEmailValidator(),
 			$failingDuplicateValidator

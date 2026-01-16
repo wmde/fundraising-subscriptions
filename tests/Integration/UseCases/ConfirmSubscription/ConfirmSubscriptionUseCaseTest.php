@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\ConfirmSubscription;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Infrastructure\TemplateMailerInterface;
@@ -27,14 +27,14 @@ class ConfirmSubscriptionUseCaseTest extends TestCase {
 	}
 
 	/**
-	 * @return TemplateMailerInterface&MockObject
+	 * @return TemplateMailerInterface&Stub
 	 */
 	private function newMailer(): TemplateMailerInterface {
-		return $this->createMock( TemplateMailerInterface::class );
+		return $this->createStub( TemplateMailerInterface::class );
 	}
 
 	public function testGivenNoSubscriptions_anErrorResponseIsCreated(): void {
-		$mailer = $this->newMailer();
+		$mailer = $this->createMock( TemplateMailerInterface::class );
 		$mailer->expects( $this->never() )->method( 'sendMail' );
 		$useCase = new ConfirmSubscriptionUseCase( new InMemorySubscriptionRepository(), $mailer );
 		$result = $useCase->confirmSubscription( self::CONFIRMATION_CODE );
@@ -48,7 +48,7 @@ class ConfirmSubscriptionUseCaseTest extends TestCase {
 		$repo = new InMemorySubscriptionRepository();
 		$repo->storeSubscription( $subscription );
 
-		$mailer = $this->newMailer();
+		$mailer = $this->createMock( TemplateMailerInterface::class );
 		$mailer->expects( $this->never() )->method( 'sendMail' );
 
 		$useCase = new ConfirmSubscriptionUseCase( $repo, $mailer );
@@ -79,7 +79,7 @@ class ConfirmSubscriptionUseCaseTest extends TestCase {
 		$repo = new InMemorySubscriptionRepository();
 		$repo->storeSubscription( $this->newSubscription() );
 
-		$mailer = $this->newMailer();
+		$mailer = $this->createMock( TemplateMailerInterface::class );
 		$mailer->expects( $this->once() )->method( 'sendMail' );
 
 		$useCase = new ConfirmSubscriptionUseCase( $repo, $mailer );

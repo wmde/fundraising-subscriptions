@@ -18,8 +18,9 @@ use WMDE\Fundraising\SubscriptionContext\Validation\SubscriptionDuplicateValidat
 class SubscriptionDuplicateValidatorTest extends TestCase {
 
 	public function testGivenSubscriptionCountOfZero_validationSucceeds(): void {
-		$repository = $this->createMock( SubscriptionRepository::class );
-		$repository->method( 'countSimilar' )->willReturn( 0 );
+		$repository = $this->createConfiguredStub( SubscriptionRepository::class, [
+			'countSimilar' => 0,
+		] );
 
 		$cutoffDateTime = new DateTime( '3 hours ago' );
 		$validator = new SubscriptionDuplicateValidator( $repository, $cutoffDateTime );
@@ -28,8 +29,9 @@ class SubscriptionDuplicateValidatorTest extends TestCase {
 	}
 
 	public function testGivenSubscriptionCountGreaterThanZero_validationFails(): void {
-		$repository = $this->createMock( SubscriptionRepository::class );
-		$repository->method( 'countSimilar' )->willReturn( 1 );
+		$repository = $this->createConfiguredStub( SubscriptionRepository::class, [
+			'countSimilar' => 1,
+		] );
 
 		$cutoffDateTime = new DateTime( '3 hours ago' );
 		$validator = new SubscriptionDuplicateValidator( $repository, $cutoffDateTime );
