@@ -22,6 +22,7 @@ class TestSubscriptionContextFactory {
 			'driver' => 'pdo_sqlite',
 			'memory' => true,
 		] );
+		$doctrineConfig->enableNativeLazyObjects( true );
 		$this->entityManager = null;
 	}
 
