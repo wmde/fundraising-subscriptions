@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace WMDE\Fundraising\SubscriptionContext\Tests\Integration\UseCases\AddSubscription;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use WMDE\EmailAddress\EmailAddress;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
@@ -28,21 +28,21 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	private $repo;
 
 	/**
-	 * @var SubscriptionValidator&MockObject
+	 * @var SubscriptionValidator&Stub
 	 */
 	private $validator;
 
 	/**
-	 * @var TemplateMailerInterface&MockObject
+	 * @var TemplateMailerInterface&Stub
 	 */
 	private $mailer;
 
 	public function setUp(): void {
 		$this->repo = new SubscriptionRepositorySpy();
 
-		$this->validator = $this->createMock( SubscriptionValidator::class );
+		$this->validator = $this->createStub( SubscriptionValidator::class );
 
-		$this->mailer = $this->createMock( TemplateMailerInterface::class );
+		$this->mailer = $this->createStub( TemplateMailerInterface::class );
 	}
 
 	private function createValidSubscriptionRequest(): SubscriptionRequest {
@@ -62,7 +62,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	public function testGivenInvalidData_anErrorResponseTypeIsCreated(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-		$request = $this->createMock( SubscriptionRequest::class );
+		$request = $this->createStub( SubscriptionRequest::class );
 
 		$result = $useCase->addSubscription( $request );
 
@@ -81,7 +81,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 	public function testGivenInvalidData_requestWillNotBeStored(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-		$request = $this->createMock( SubscriptionRequest::class );
+		$request = $this->createStub( SubscriptionRequest::class );
 
 		$useCase->addSubscription( $request );
 
@@ -90,6 +90,7 @@ class AddSubscriptionUseCaseTest extends TestCase {
 
 	public function testGivenValidData_requestWillBeMailed(): void {
 		$this->validator->method( 'validate' )->willReturn( new ValidationResult() );
+		$this->mailer = $this->createMock( TemplateMailerInterface::class );
 		$this->mailer->expects( $this->once() )
 			->method( 'sendMail' )
 			->with(
@@ -111,9 +112,10 @@ class AddSubscriptionUseCaseTest extends TestCase {
 
 	public function testGivenInvalidData_requestWillNotBeMailed(): void {
 		$this->validator->method( 'validate' )->willReturn( new FailedValidationResult() );
+		$this->mailer = $this->createMock( TemplateMailerInterface::class );
 		$this->mailer->expects( $this->never() )->method( 'sendMail' );
 		$useCase = new AddSubscriptionUseCase( $this->repo, $this->validator, $this->mailer );
-		$request = $this->createMock( SubscriptionRequest::class );
+		$request = $this->createStub( SubscriptionRequest::class );
 		$useCase->addSubscription( $request );
 	}
 
