@@ -13,4 +13,8 @@ coverage/
 
 .idea/
 
+# prevent accidental data uploads, we do not expect any sql files here
+*.sql
+*.sql.gz
 
+*.bak
