@@ -42,6 +42,11 @@ class DoctrineSubscriptionRepositoryTest extends TestCase {
 		$this->assertEquals( [ $subscription ], $expected );
 	}
 
+	public function testGivenStoredSubscription_itCanBeRetrievedById(): void {
+		//TODO
+		$this->assertFalse();
+	}
+
 	public function testGivenARecentSubscription_itIsCounted(): void {
 		$firstSubscription = $this->persistFirstSubscription();
 		$this->entityManager->flush();
