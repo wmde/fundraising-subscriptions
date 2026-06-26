@@ -1,11 +1,12 @@
 {
 	"name": "wmde/fundraising-subscriptions",
 	"license": "GPL-2.0-or-later",
-	"description": "Bounded Context for fundraising subcriptions",
+	"description": "Bounded Context for fundraising subscriptions",
 	"require": {
 		"php": ">=8.4",
 
 		"doctrine/orm": "~2.18 | ~3.0",
+		"doctrine/migrations": "^3.9",
 		"psr/log": "^1.0|^2.0|^3.0",
 
 		"wmde/email-address": "~1.0",
