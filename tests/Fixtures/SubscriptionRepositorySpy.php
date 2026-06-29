@@ -48,4 +48,7 @@ class SubscriptionRepositorySpy implements SubscriptionRepository {
 		return null;
 	}
 
+	public function getSubscriptionById( int $subscriptionId ): ?Subscription {
+		return null;
+	}
 }

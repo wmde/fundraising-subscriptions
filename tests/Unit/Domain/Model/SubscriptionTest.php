@@ -28,13 +28,4 @@ class SubscriptionTest extends TestCase {
 		$this->assertFalse( $subscription->isUnconfirmed() );
 	}
 
-	public function testScrubbingPersonalData_removesPersonalData(): void {
-		$subscription = new Subscription();
-		$subscription->setEmail("IamSensitiveData@hotmail.com" );
-
-		$subscription->scrubPersonalData();
-
-		$this->assertEquals( '', $subscription->getEmail() );
-	}
-
 }

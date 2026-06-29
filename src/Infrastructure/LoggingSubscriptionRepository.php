@@ -79,4 +79,12 @@ class LoggingSubscriptionRepository implements SubscriptionRepository {
 		}
 	}
 
+	public function getSubscriptionById( int $subscriptionId ): ?Subscription {
+		try {
+			return $this->repository->getSubscriptionById( $subscriptionId );
+		} catch ( SubscriptionRepositoryException $ex ) {
+			$this->logger->log( $this->logLevel, $ex->getMessage(), [ self::CONTEXT_EXCEPTION_KEY => $ex ] );
+			throw $ex;
+		}
+	}
 }

@@ -7,9 +7,6 @@ namespace WMDE\Fundraising\SubscriptionContext\DataAccess\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20260626161841 extends AbstractMigration {
 	public function getDescription(): string {
 		return 'Remove `full_name` field from subscription table';

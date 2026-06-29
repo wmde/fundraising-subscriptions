@@ -75,12 +75,12 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository {
 	/**
 	 * @param int $subscriptionId
 	 *
-	 * @return Subscription
+	 * @return Subscription|null
 	 */
-	public function getSubscriptionById( int $subscriptionId ): Subscription {
+	public function getSubscriptionById( int $subscriptionId ): ?Subscription {
 		try {
 			return $this->entityManager->getRepository( Subscription::class )->findOneBy(
-				['id' => $subscriptionId ]
+				[ 'id' => $subscriptionId ]
 			);
 		} catch ( ORMException $e ) {
 			throw new SubscriptionRepositoryException( "Could not find subscription by this ID.", $e );
