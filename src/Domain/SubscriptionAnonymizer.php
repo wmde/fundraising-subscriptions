@@ -11,9 +11,9 @@ interface SubscriptionAnonymizer {
 	 *
 	 * @param int ...$subscriptionIds
 	 *
-	 * @return void
+	 * @return int amount of deleted rows
 	 */
-	public function anonymizeWithIds( int ...$subscriptionIds ): void;
+	public function anonymizeWithIds( int ...$subscriptionIds ): int;
 
 	/**
 	 * Anonymize all subscriptions that are allowed to be scrubbed.

@@ -153,19 +153,4 @@ class Subscription {
 		return $this->status === self::STATUS_NEW;
 	}
 
-	public function scrubPersonalData(): void {
-		if ( !$this->scrubbingIsAllowed() ) {
-			throw new \DomainException( "This subscription with this id is currently not allowed to be scrubbed: $this->id" );
-		}
-
-		//TODO document this in the GDPR overview file
-		$this->email = '';
-	}
-
-	private function scrubbingIsAllowed(): bool {
-		//TODO document this in the GDPR overview file
-		//TODO find out conditions
-		return false;
-	}
-
 }

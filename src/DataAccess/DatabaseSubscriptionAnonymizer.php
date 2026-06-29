@@ -4,31 +4,59 @@ declare( strict_types = 1 );
 
 namespace WMDE\Fundraising\SubscriptionContext\DataAccess;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManager;
-use WMDE\Fundraising\SubscriptionContext\Domain\AnonymizationException;
+use WMDE\Clock\Clock;
 use WMDE\Fundraising\SubscriptionContext\Domain\SubscriptionAnonymizer;
 
+/**
+ * For "anonymizing" subscriptions instead of scrubbing certain fields we can safely delete the entire entry.
+ */
 class DatabaseSubscriptionAnonymizer implements SubscriptionAnonymizer {
 
 	public function __construct(
-		private readonly DoctrineSubscriptionRepository $subscriptionRepository,
-		private readonly EntityManager $entityManager
+		private readonly EntityManager $entityManager,
+		private readonly Clock $clock,
+		private readonly \DateInterval $exportGracePeriod
 	) {
 	}
 
-	public function anonymizeWithIds( int ...$subscriptionIds ): void {
-		foreach ( $subscriptionIds as $subscriptionId ) {
-			$subscription = $this->subscriptionRepository->getSubscriptionById( $subscriptionId );
-			if( $subscription == null ){
-				throw new AnonymizationException( "Could not find subscription with id $subscriptionId" );
-			}
+	/**
+	 * @param int ...$subscriptionIds
+	 *
+	 * @return int amount of deleted rows
+	 * @throws Exception
+	 * @throws \DateInvalidOperationException
+	 */
+	public function anonymizeWithIds( int ...$subscriptionIds ): int {
+		$cutoffDate = $this->clock->now()->sub( $this->exportGracePeriod );
 
-			$subscription->scrubPersonalData();
-			$this->subscriptionRepository->storeSubscription( $subscription );
-		}
+		$queryResult = $this->entityManager->getConnection()->executeQuery(
+			sql: 'DELETE FROM subscription WHERE id IN ( ? ) AND ( export IS NOT NULL OR createdAt < ? ); ',
+			params: [
+				$subscriptionIds,
+				$cutoffDate->format( 'Y-m-d H:i:s' )
+			],
+			types: [
+				ArrayParameterType::INTEGER,
+				ParameterType::STRING
+			]
+		);
+
+		return intval( $queryResult->rowCount() );
 	}
 
 	public function anonymizeAll(): int {
-		// TODO: Implement anonymizeAll() method.
+		$cutoffDate = $this->clock->now()->sub( $this->exportGracePeriod );
+
+		$queryResult = $this->entityManager->getConnection()->executeQuery(
+			sql: 'DELETE FROM subscription WHERE export IS NOT NULL OR createdAt < :gracePeriodDate; ',
+			params: [ 'gracePeriodDate' => $cutoffDate->format( 'Y-m-d H:i:s' ) ],
+			types: [ ParameterType::STRING ]
+		);
+
+		return intval( $queryResult->rowCount() );
 	}
 }

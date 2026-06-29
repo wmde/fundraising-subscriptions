@@ -39,4 +39,6 @@ interface SubscriptionRepository {
 	 */
 	public function findByConfirmationCode( string $confirmationCode ): ?Subscription;
 
+	public function getSubscriptionById( int $subscriptionId ): ?Subscription;
+
 }

@@ -18,11 +18,18 @@ class DatabaseSubscriptionAnonymizationMonitor implements SubscriptionAnonymizat
 		$this->clock = $clock;
 	}
 
+	/**
+	 * Checks if there are old subscription entries in the database.
+	 * Subscriptions usually should get deleted after export (or after a grace period has passed).
+	 * @return int
+	 * @throws \DateInvalidOperationException
+	 * @throws \Doctrine\DBAL\Exception
+	 */
 	public function countUnscrubbedSubscriptions(): int {
 		$now = $this->clock->now();
 		$gracePeriodDate = \DateTime::createFromImmutable( $now->sub( new \DateInterval( self::EXPORT_GRACE_PERIOD ) ) );
 
-		$sqlQuery = "SELECT COUNT(id) as count FROM subscription s WHERE (s.email is not null AND s.email!='') AND s.createdAt < :gracePeriodDate; ";
+		$sqlQuery = "SELECT COUNT(*) as count FROM subscription s WHERE s.export IS NOT NULL OR s.createdAt < :gracePeriodDate; ";
 		$queryResult = $this->conn->executeQuery(
 			sql: $sqlQuery,
 			params: [ 'gracePeriodDate' => $gracePeriodDate->format( 'Y-m-d H:i:s' ) ]
