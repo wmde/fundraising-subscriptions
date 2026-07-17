@@ -8,14 +8,14 @@ use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WMDE\Clock\SystemClock;
-use WMDE\Fundraising\SubscriptionContext\DataAccess\DatabaseSubscriptionAnonymizer;
+use WMDE\Fundraising\SubscriptionContext\DataAccess\DatabaseSubscriptionRemover;
 use WMDE\Fundraising\SubscriptionContext\DataAccess\DoctrineSubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Domain\Model\Subscription;
 use WMDE\Fundraising\SubscriptionContext\Domain\Repositories\SubscriptionRepository;
 use WMDE\Fundraising\SubscriptionContext\Tests\TestEnvironment;
 
-#[CoversClass( DatabaseSubscriptionAnonymizer::class )]
-class DatabaseSubscriptionAnonymizerTest extends TestCase {
+#[CoversClass( DatabaseSubscriptionRemover::class )]
+class DatabaseSubscriptionRemoverTest extends TestCase {
 
 	private SubscriptionRepository $subscriptionRepo;
 	private EntityManager $entityManager;
@@ -23,7 +23,7 @@ class DatabaseSubscriptionAnonymizerTest extends TestCase {
 	private SystemClock $clock;
 	private \DateInterval $exportGracePeriod;
 
-	private DatabaseSubscriptionAnonymizer $anonymizer;
+	private DatabaseSubscriptionRemover $subscriptionRemover;
 
 	public function setUp(): void {
 		$this->entityManager = TestEnvironment::newInstance()->getEntityManager();
@@ -32,51 +32,51 @@ class DatabaseSubscriptionAnonymizerTest extends TestCase {
 		$this->clock = new SystemClock();
 		$this->exportGracePeriod = new \DateInterval( 'P2D' );
 
-		$this->anonymizer = new DatabaseSubscriptionAnonymizer(
+		$this->subscriptionRemover = new DatabaseSubscriptionRemover(
 			entityManager: $this->entityManager,
 			clock: $this->clock,
 			exportGracePeriod: $this->exportGracePeriod
 		);
 	}
 
-	public function testAnonymizeAllReturns0ForEmptyTable(): void {
+	public function testRemoveAllReturns0ForEmptyTable(): void {
 		// no entries in the database
 
-		$this->assertSame( 0, $this->anonymizer->anonymizeAll() );
+		$this->assertSame( 0, $this->subscriptionRemover->removeAll() );
 	}
 
-	public function testAnonymizeAllDeletesExportedSubscriptions(): void {
+	public function testRemoveAllDeletesExportedSubscriptions(): void {
 		// id 1
 		$unexportedSub = $this->insertUnExportedRecentSubscription();
 		// id 2
 		$exportedSub = $this->insertExportedRecentSubscription();
 
-		$affectedRows = $this->anonymizer->anonymizeAll();
+		$affectedRows = $this->subscriptionRemover->removeAll();
 
 		$this->assertSame( 1, $affectedRows );
 		$this->assertNull( $this->subscriptionRepo->getSubscriptionById( $exportedSub->getId() ) );
 		$this->assertNotNull( $this->subscriptionRepo->getSubscriptionById( $unexportedSub->getId() ) );
 	}
 
-	public function testAnonymizeAllDeletesSubscriptionsOlderThanGracePeriod(): void {
+	public function testRemoveAllDeletesSubscriptionsOlderThanGracePeriod(): void {
 		$this->insertSubscriptionOlderThanGracePeriod();
 
-		$this->assertSame( 1, $this->anonymizer->anonymizeAll() );
+		$this->assertSame( 1, $this->subscriptionRemover->removeAll() );
 	}
 
-	public function testAnonymizeAllDoesNotDeleteUnexportedSubscriptionsWithinGracePeriod(): void {
+	public function testRemoveAllDoesNotDeleteUnexportedSubscriptionsWithinGracePeriod(): void {
 		$this->insertUnExportedRecentSubscription();
 
-		$this->assertSame( 0, $this->anonymizer->anonymizeAll() );
+		$this->assertSame( 0, $this->subscriptionRemover->removeAll() );
 	}
 
-	public function testAnonymizeWithIdsReturns0ForEmptyTable(): void {
+	public function testRemoveByIdsReturns0ForEmptyTable(): void {
 		// no entries in the database
 
-		$this->assertSame( 0, $this->anonymizer->anonymizeWithIds( 0, 1, 2, 44 ) );
+		$this->assertSame( 0, $this->subscriptionRemover->removeByIds( 0, 1, 2, 44 ) );
 	}
 
-	public function testAnonymizeWithIdsDeletesExportedSubscriptions(): void {
+	public function testRemoveByIdsDeletesExportedSubscriptions(): void {
 		// id 1 (shouldn't get deleted)
 		$unexportedSub = $this->insertUnExportedRecentSubscription();
 		// id 2
@@ -84,7 +84,7 @@ class DatabaseSubscriptionAnonymizerTest extends TestCase {
 		// id 3
 		$exportedSub2 = $this->insertExportedRecentSubscription();
 
-		$affectedRows = $this->anonymizer->anonymizeWithIds( 1, 2 );
+		$affectedRows = $this->subscriptionRemover->removeByIds( 1, 2 );
 
 		$this->assertSame( 1, $affectedRows );
 		$this->assertNotNull( $this->subscriptionRepo->getSubscriptionById( $unexportedSub->getId() ) );
@@ -92,10 +92,10 @@ class DatabaseSubscriptionAnonymizerTest extends TestCase {
 		$this->assertNotNull( $this->subscriptionRepo->getSubscriptionById( $exportedSub2->getId() ) );
 	}
 
-	public function testAnonymizeWithIdsDeletesSubscriptionsOlderThanGracePeriod(): void {
+	public function testRemoveByIdsDeletesSubscriptionsOlderThanGracePeriod(): void {
 		$subscription = $this->insertSubscriptionOlderThanGracePeriod();
 
-		$affectedRows = $this->anonymizer->anonymizeWithIds( $subscription->getId() );
+		$affectedRows = $this->subscriptionRemover->removeByIds( $subscription->getId() );
 
 		$this->assertSame( 1, $affectedRows );
 		$this->assertNull( $this->subscriptionRepo->getSubscriptionById( $subscription->getId() ) );

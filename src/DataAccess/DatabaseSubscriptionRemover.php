@@ -9,12 +9,12 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManager;
 use WMDE\Clock\Clock;
-use WMDE\Fundraising\SubscriptionContext\Domain\SubscriptionAnonymizer;
+use WMDE\Fundraising\SubscriptionContext\Domain\SubscriptionRemover;
 
 /**
- * For "anonymizing" subscriptions instead of scrubbing certain fields we can safely delete the entire entry.
+ * In order to clean up old subscriptions instead of scrubbing certain fields we can safely delete the entire entry.
  */
-class DatabaseSubscriptionAnonymizer implements SubscriptionAnonymizer {
+class DatabaseSubscriptionRemover implements SubscriptionRemover {
 
 	public function __construct(
 		private readonly EntityManager $entityManager,
@@ -30,7 +30,7 @@ class DatabaseSubscriptionAnonymizer implements SubscriptionAnonymizer {
 	 * @throws Exception
 	 * @throws \DateInvalidOperationException
 	 */
-	public function anonymizeWithIds( int ...$subscriptionIds ): int {
+	public function removeByIds( int ...$subscriptionIds ): int {
 		$cutoffDate = $this->clock->now()->sub( $this->exportGracePeriod );
 
 		$queryResult = $this->entityManager->getConnection()->executeQuery(
@@ -48,7 +48,7 @@ class DatabaseSubscriptionAnonymizer implements SubscriptionAnonymizer {
 		return intval( $queryResult->rowCount() );
 	}
 
-	public function anonymizeAll(): int {
+	public function removeAll(): int {
 		$cutoffDate = $this->clock->now()->sub( $this->exportGracePeriod );
 
 		$queryResult = $this->entityManager->getConnection()->executeQuery(
