@@ -7,7 +7,7 @@ namespace WMDE\Fundraising\SubscriptionContext\DataAccess;
 use Doctrine\DBAL\Connection;
 use WMDE\Clock\Clock;
 
-class DatabaseSubscriptionAnonymizationMonitor implements SubscriptionAnonymizationMonitor {
+class DatabaseSubscriptionRemovalMonitor implements SubscriptionRemovalMonitor {
 
 	private const string EXPORT_GRACE_PERIOD = 'P1M';
 	private Connection $conn;
@@ -25,7 +25,7 @@ class DatabaseSubscriptionAnonymizationMonitor implements SubscriptionAnonymizat
 	 * @throws \DateInvalidOperationException
 	 * @throws \Doctrine\DBAL\Exception
 	 */
-	public function countUnscrubbedSubscriptions(): int {
+	public function countUnremovedSubscriptions(): int {
 		$now = $this->clock->now();
 		$gracePeriodDate = \DateTime::createFromImmutable( $now->sub( new \DateInterval( self::EXPORT_GRACE_PERIOD ) ) );
 
