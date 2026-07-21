@@ -9,13 +9,14 @@ use WMDE\Clock\Clock;
 
 class DatabaseSubscriptionRemovalMonitor implements SubscriptionRemovalMonitor {
 
-	private const string EXPORT_GRACE_PERIOD = 'P1M';
 	private Connection $conn;
 	private Clock $clock;
+	private \DateInterval $exportGracePeriod;
 
-	public function __construct( Connection $conn, Clock $clock ) {
+	public function __construct( Connection $conn, Clock $clock, \DateInterval $exportGracePeriod ) {
 		$this->conn = $conn;
 		$this->clock = $clock;
+		$this->exportGracePeriod = $exportGracePeriod;
 	}
 
 	/**
@@ -27,7 +28,7 @@ class DatabaseSubscriptionRemovalMonitor implements SubscriptionRemovalMonitor {
 	 */
 	public function countUnremovedSubscriptions(): int {
 		$now = $this->clock->now();
-		$gracePeriodDate = \DateTime::createFromImmutable( $now->sub( new \DateInterval( self::EXPORT_GRACE_PERIOD ) ) );
+		$gracePeriodDate = \DateTime::createFromImmutable( $now->sub( $this->exportGracePeriod ) );
 
 		$sqlQuery = "SELECT COUNT(*) as count FROM subscription s WHERE s.export IS NOT NULL OR s.createdAt < :gracePeriodDate; ";
 		$queryResult = $this->conn->executeQuery(

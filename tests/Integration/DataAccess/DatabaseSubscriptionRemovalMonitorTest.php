@@ -21,17 +21,19 @@ class DatabaseSubscriptionRemovalMonitorTest extends TestCase {
 	private EntityManager $entityManager;
 	private SystemClock $clock;
 	private Connection $conn;
+	private \DateInterval $exportGracePeriod;
 	private SubscriptionRemovalMonitor $monitor;
 
 	public function setUp(): void {
 		$this->clock = new SystemClock();
 		$this->entityManager = TestEnvironment::newInstance()->getEntityManager();
 		$this->conn = $this->entityManager->getConnection();
-		$this->monitor = new DatabaseSubscriptionRemovalMonitor( $this->conn, $this->clock );
+		$this->exportGracePeriod = new \DateInterval( 'P1M' );
+		$this->monitor = new DatabaseSubscriptionRemovalMonitor( $this->conn, $this->clock, $this->exportGracePeriod );
 	}
 
 	public function testCountUnremovedSubscriptions_ReturnsMinusOneOnError(): void {
-		$throwingMonitor = new DatabaseSubscriptionRemovalMonitor( $this->givenThrowingDatabaseConnection(), $this->clock );
+		$throwingMonitor = new DatabaseSubscriptionRemovalMonitor( $this->givenThrowingDatabaseConnection(), $this->clock, $this->exportGracePeriod );
 
 		$this->assertEquals( -1, $throwingMonitor->countUnremovedSubscriptions() );
 	}
