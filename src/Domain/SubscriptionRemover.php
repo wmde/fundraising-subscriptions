@@ -7,13 +7,14 @@ namespace WMDE\Fundraising\SubscriptionContext\Domain;
 interface SubscriptionRemover {
 
 	/**
-	 * Permanently delete individual subscriptions
+	 * Permanently delete individual subscriptions **without any deletion policy checks.**
+	 * This is intended to be used by GDPR removal tools (e.g. Fundraising Operation Center).
 	 *
 	 * @param int ...$subscriptionIds
 	 *
 	 * @return int amount of deleted rows
 	 */
-	public function removeByIds( int ...$subscriptionIds ): int;
+	public function forceRemoveByIds( int ...$subscriptionIds ): int;
 
 	/**
 	 * Permanently delete all subscriptions that are allowed to be deleted.

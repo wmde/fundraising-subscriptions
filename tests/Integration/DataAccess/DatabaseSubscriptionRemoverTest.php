@@ -70,35 +70,26 @@ class DatabaseSubscriptionRemoverTest extends TestCase {
 		$this->assertSame( 0, $this->subscriptionRemover->removeAll() );
 	}
 
-	public function testRemoveByIdsReturns0ForEmptyTable(): void {
+	public function testForceRemoveByIdsReturns0ForEmptyTable(): void {
 		// no entries in the database
 
-		$this->assertSame( 0, $this->subscriptionRemover->removeByIds( 0, 1, 2, 44 ) );
+		$this->assertSame( 0, $this->subscriptionRemover->forceRemoveByIds( 0, 1, 2, 44 ) );
 	}
 
-	public function testRemoveByIdsDeletesExportedSubscriptions(): void {
-		// id 1 (shouldn't get deleted)
+	public function testForceRemoveByIdsDeletesSubscriptionsWithoutFurtherChecksOnExportStatus(): void {
+		// id 1
 		$unexportedSub = $this->insertUnExportedRecentSubscription();
 		// id 2
 		$exportedSub1 = $this->insertExportedRecentSubscription();
 		// id 3
 		$exportedSub2 = $this->insertExportedRecentSubscription();
 
-		$affectedRows = $this->subscriptionRemover->removeByIds( 1, 2 );
+		$affectedRows = $this->subscriptionRemover->forceRemoveByIds( 1, 2 );
 
-		$this->assertSame( 1, $affectedRows );
-		$this->assertNotNull( $this->subscriptionRepo->getSubscriptionById( $unexportedSub->getId() ) );
+		$this->assertSame( 2, $affectedRows );
+		$this->assertNull( $this->subscriptionRepo->getSubscriptionById( $unexportedSub->getId() ) );
 		$this->assertNull( $this->subscriptionRepo->getSubscriptionById( $exportedSub1->getId() ) );
 		$this->assertNotNull( $this->subscriptionRepo->getSubscriptionById( $exportedSub2->getId() ) );
-	}
-
-	public function testRemoveByIdsDeletesSubscriptionsOlderThanGracePeriod(): void {
-		$subscription = $this->insertSubscriptionOlderThanGracePeriod();
-
-		$affectedRows = $this->subscriptionRemover->removeByIds( $subscription->getId() );
-
-		$this->assertSame( 1, $affectedRows );
-		$this->assertNull( $this->subscriptionRepo->getSubscriptionById( $subscription->getId() ) );
 	}
 
 	private function insertSubscriptionOlderThanGracePeriod(): Subscription {
