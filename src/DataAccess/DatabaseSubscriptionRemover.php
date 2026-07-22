@@ -30,18 +30,14 @@ class DatabaseSubscriptionRemover implements SubscriptionRemover {
 	 * @throws Exception
 	 * @throws \DateInvalidOperationException
 	 */
-	public function removeByIds( int ...$subscriptionIds ): int {
-		$cutoffDate = $this->clock->now()->sub( $this->exportGracePeriod );
-
+	public function forceRemoveByIds( int ...$subscriptionIds ): int {
 		$queryResult = $this->entityManager->getConnection()->executeQuery(
-			sql: 'DELETE FROM subscription WHERE id IN ( ? ) AND ( export IS NOT NULL OR createdAt < ? ); ',
+			sql: 'DELETE FROM subscription WHERE id IN ( ? ); ',
 			params: [
-				$subscriptionIds,
-				$cutoffDate->format( 'Y-m-d H:i:s' )
+				$subscriptionIds
 			],
 			types: [
-				ArrayParameterType::INTEGER,
-				ParameterType::STRING
+				ArrayParameterType::INTEGER
 			]
 		);
 
