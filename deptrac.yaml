@@ -38,6 +38,8 @@ deptrac:
           value: /WMDE\\EmailAddress\\EmailAddress/
         - type: classNameRegex
           value: /WMDE\\FunValidators\\.*/
+        - type: classNameRegex
+          value: /WMDE\\Clock\\.*/
     # External Vendor libraries
     - name: Doctrine
       collectors:

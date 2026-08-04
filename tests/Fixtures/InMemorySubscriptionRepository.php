@@ -53,4 +53,13 @@ class InMemorySubscriptionRepository implements SubscriptionRepository {
 		return null;
 	}
 
+	public function getSubscriptionById( int $subscriptionId ): ?Subscription {
+		foreach ( $this->subscriptions as $subscription ) {
+			if ( $subscription->getId() === $subscriptionId ) {
+				return $subscription;
+			}
+		}
+
+		return null;
+	}
 }
