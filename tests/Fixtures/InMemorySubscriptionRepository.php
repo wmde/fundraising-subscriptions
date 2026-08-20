@@ -53,6 +53,22 @@ class InMemorySubscriptionRepository implements SubscriptionRepository {
 		return null;
 	}
 
+	/**
+	 * @param string $emailAddress
+	 *
+	 * @return Subscription[]
+	 */
+	public function findSubscriptionsByPersonalData( string $emailAddress ): array {
+		$foundSubscriptions = [];
+		foreach ( $this->subscriptions as $subscription ) {
+			if ( $subscription->getEmail() === $emailAddress ) {
+				$foundSubscriptions []= $subscription;
+			}
+		}
+
+		return $foundSubscriptions;
+	}
+
 	public function getSubscriptionById( int $subscriptionId ): ?Subscription {
 		foreach ( $this->subscriptions as $subscription ) {
 			if ( $subscription->getId() === $subscriptionId ) {
