@@ -39,6 +39,13 @@ interface SubscriptionRepository {
 	 */
 	public function findByConfirmationCode( string $confirmationCode ): ?Subscription;
 
+	/**
+	 * @param string $emailAddress currently email addresses are the only type personal data in a subscription object
+	 *
+	 * @retrun Subscription[]
+	 */
+	public function findSubscriptionsByPersonalData( string $emailAddress ): array;
+
 	public function getSubscriptionById( int $subscriptionId ): ?Subscription;
 
 }
